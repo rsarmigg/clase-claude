@@ -1,3 +1,5 @@
-*.png
 .playwright-mcp/
-Screenshots/
+no_esta_centrado.png
+resize_please.png
+test_*.png
+v5-*.png

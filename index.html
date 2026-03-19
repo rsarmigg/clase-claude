@@ -685,6 +685,9 @@
                         <p><strong>Node.js</strong> instalado, <br> permisos de administrador (para Claude Code),<br>Plan <strong>Pro/Max</strong> recomendado<br>Acceso a una terminal</p>
                     </div>
                 </div>
+                <p style="font-size: 0.55em; color: var(--color-text-muted); margin-top: 1.5em; font-style: italic;">
+                    Los módulos avanzados son para que conozcan las posibilidades — no se preocupen si no aplica directamente a su rol. Lo importante es saber que existe.
+                </p>
             </div>
             <!-- Verificar con la audiencia: ¿todos tienen cuenta en claude.ai? Si alguien no tiene, que la creen ahora. Los módulos 4-5 son más técnicos pero todos pueden seguir la lógica. -->
         </div>
@@ -705,54 +708,23 @@
         <!-- SLIDE 5: 1.1 INTERFACE TOUR -->
         <div class="slide">
             <div class="slide-content">
-                <h3 style="color: var(--color-m1);">1.1 &mdash; Tour de la Interfaz</h3>
-                <h2>claude.ai por dentro</h2>
-                <!-- CSS Mockup: claude.ai interface -->
-                <div style="max-width: 85%; margin: 16px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); display: flex; height: 260px; font-size: 0.4em; background: #1a1a2e;">
-                    <!-- Sidebar -->
-                    <div style="width: 180px; background: #12121f; border-right: 1px solid rgba(255,255,255,0.08); padding: 12px; display: flex; flex-direction: column; gap: 8px;">
-                        <div style="background: rgba(217,119,6,0.2); color: var(--color-accent); padding: 8px 12px; border-radius: 8px; font-weight: 600; text-align: center; cursor: pointer;">+ Nueva conversación</div>
-                        <div style="margin-top: 8px; font-size: 0.85em; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Recientes</div>
-                        <div style="padding: 6px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--color-text); font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Análisis de ventas Q4</div>
-                        <div style="padding: 6px 10px; border-radius: 6px; color: var(--color-text-muted); font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Refactorizar API auth</div>
-                        <div style="padding: 6px 10px; border-radius: 6px; color: var(--color-text-muted); font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Email para cliente</div>
-                        <div style="padding: 6px 10px; border-radius: 6px; color: var(--color-text-muted); font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Plan de marketing 2026</div>
-                    </div>
-                    <!-- Main area -->
-                    <div style="flex: 1; display: flex; flex-direction: column;">
-                        <!-- Top bar with model selector -->
-                        <div style="padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 10px;">
-                            <div style="background: rgba(167,139,250,0.15); color: #a78bfa; padding: 4px 14px; border-radius: 20px; font-weight: 600; font-size: 0.9em;">Claude Sonnet</div>
-                            <span style="color: var(--color-text-muted); font-size: 0.85em;">&#9660;</span>
-                        </div>
-                        <!-- Conversation -->
-                        <div style="flex: 1; padding: 16px; overflow: hidden; display: flex; flex-direction: column; gap: 12px;">
-                            <!-- User message -->
-                            <div style="align-self: flex-end; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2); padding: 10px 14px; border-radius: 12px 12px 4px 12px; max-width: 75%; text-align: left; color: var(--color-text);">
-                                Compara PostgreSQL vs MongoDB para analytics en tiempo real con 10M eventos/día
-                            </div>
-                            <!-- Claude response -->
-                            <div style="align-self: flex-start; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); padding: 10px 14px; border-radius: 4px 12px 12px 12px; max-width: 80%; text-align: left; color: var(--color-text-muted); line-height: 1.5;">
-                                <span style="color: var(--color-accent); font-weight: 600;">Claude:</span> Excelente pregunta. Analicemos ambas opciones considerando tu volumen de 10M eventos/día...<br><br>
-                                <strong style="color: var(--color-text);">PostgreSQL</strong> con extensiones como TimescaleDB ofrece...<br>
-                                <strong style="color: var(--color-text);">MongoDB</strong> con su pipeline de agregación...
-                            </div>
-                        </div>
-                        <!-- Input bar -->
-                        <div style="padding: 10px 16px; border-top: 1px solid rgba(255,255,255,0.06);">
-                            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 14px; color: var(--color-text-muted); display: flex; justify-content: space-between; align-items: center;">
-                                <span>Escribe tu mensaje...</span>
-                                <span style="background: var(--color-accent); color: #000; width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold;">&#8593;</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="font-size: 0.55em; margin-top: 1em; display: flex; justify-content: center; gap: 40px;">
-                    <span class="fragment"><strong>1.</strong> Panel de conversación</span>
-                    <span class="fragment"><strong>2.</strong> Selector de modelo</span>
-                    <span class="fragment"><strong>3.</strong> Área de input</span>
-                    <span class="fragment"><strong>4.</strong> Historial lateral</span>
-                </div>
+        <h3 style="color: var(--color-m1);">1.1 — Tour de la Interfaz</h3>
+        <h2>Claude está en todas partes</h2>
+        <div class="grid-2" style="margin-top: 0.8em;">
+            <div style="text-align: center;">
+                <img src="Screenshots/slide_5.png" alt="Interfaz de Claude" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
+            </div>
+            <div style="text-align: left;">
+                <ul style="font-size: 0.75em;">
+                    <li><strong>Web:</strong> claude.ai desde cualquier browser</li>
+                    <li><strong>App móvil:</strong> iOS y Android</li>
+                    <li><strong>App de escritorio:</strong> macOS y Windows</li>
+                    <li><strong>Línea de comandos:</strong> Claude Code en tu terminal</li>
+                    <li><strong>Embebido:</strong> API para integrarlo en tus propias apps</li>
+                    <li><strong>IDEs:</strong> Extensiones para VS Code, JetBrains, etc.</li>
+                </ul>
+            </div>
+        </div>
             </div>
             <!-- Abrir claude.ai y hacer un tour en vivo. Señalar cada elemento de la interfaz. -->
         </div>
@@ -900,36 +872,45 @@
             <!-- Mostrar un ejemplo donde extended thinking marca la diferencia: un puzzle lógico o un problema de código complejo. -->
         </div>
 
-        <!-- SLIDE 11: 1.4 EXERCISE -->
-        <div class="slide exercise-slide">
+        <!-- SLIDE: Context Window 1M -->
+        <div class="slide">
             <div class="slide-content">
-                <div class="exercise-badge">Ejercicio Práctico</div>
-                <h2>El Makeover de Prompts</h2>
-                <p style="font-size: 0.65em; color: var(--color-text-muted); margin-bottom: 1em;">Transforma estos prompts usando CRAFT:</p>
-                <div style="text-align: left; font-size: 0.6em;">
-                    <div class="prompt-box bad" style="margin-bottom: 12px;">
-                        <strong>1.</strong> "Ayúdame con mi presentación"
+                <h3 style="color: var(--color-m1);">1.3 — Ventana de Contexto</h3>
+                <h2>1 millón de tokens: ¿qué significa?</h2>
+                <div class="grid-3" style="margin-top: 0.8em;">
+                    <div class="card" style="text-align: center;">
+                        <h4 style="color: var(--color-m1); font-size: 1.8em; margin-bottom: 0.2em;">750K</h4>
+                        <p>palabras en una sola conversación (~3,000 páginas)</p>
                     </div>
-                    <div class="prompt-box bad" style="margin-bottom: 12px;">
-                        <strong>2.</strong> "Escribe un email profesional"
+                    <div class="card" style="text-align: center;">
+                        <h4 style="color: var(--color-m1); font-size: 1.8em; margin-bottom: 0.2em;">110K</h4>
+                        <p>líneas de código analizadas de golpe</p>
                     </div>
-                    <div class="prompt-box bad">
-                        <strong>3.</strong> "Explícame machine learning"
+                    <div class="card" style="text-align: center;">
+                        <h4 style="color: var(--color-m1); font-size: 1.8em; margin-bottom: 0.2em;">600</h4>
+                        <p>PDFs o imágenes procesados simultáneamente</p>
                     </div>
                 </div>
-                <div class="timer">5 minutos &bull; Abre claude.ai y prueba tus versiones mejoradas</div>
+                <div style="margin-top: 1em; padding: 12px; background: rgba(16,185,129,0.1); border-radius: 10px; border-left: 4px solid var(--color-m1);">
+                    <p style="font-size: 0.55em; margin: 0;"><strong>¿Qué tanto recuerda Claude de todo eso?</strong> 78.3% de precisión en el benchmark MRCR v2 — buscar 2 datos escondidos en 3,000 páginas. Gemini: 26.3%. Es como tener un analista que realmente lee TODO.</p>
+                </div>
             </div>
-            <!-- 5 minutos. Los asistentes reescriben los 3 prompts usando CRAFT en sus propias sesiones de Claude. Al terminar, pedir 2-3 voluntarios que compartan su mejor prompt. -->
         </div>
 
-        <!-- ============================================================ -->
-        <!-- SLIDE 12: TRANSITION 1 → 2                                  -->
-        <!-- ============================================================ -->
-        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, var(--color-bg) 50%, rgba(59,130,246,0.1) 100%);">
+        <!-- SLIDE: Context in Practice -->
+        <div class="slide">
             <div class="slide-content">
-                <blockquote>
-                    Ahora que puedes tener grandes conversaciones con Claude... ¿qué tal si Claude te <em>mostrara</em> su trabajo en vez de solo describirlo?
-                </blockquote>
+                <h3 style="color: var(--color-m1);">1.3 — Contexto en la práctica</h3>
+                <h2>Lo que esto habilita</h2>
+                <ul style="font-size: 0.75em; text-align: left;">
+                    <li><strong>Investigación:</strong> Carga papers, transcripciones, reportes competitivos — todo en una sesión</li>
+                    <li><strong>Producto:</strong> Un trimestre de entrevistas con clientes + tickets de soporte + feature requests = síntesis automática</li>
+                    <li><strong>Desarrollo:</strong> Pega un codebase entero sin que se pierda la arquitectura ni los detalles</li>
+                    <li><strong>Finanzas:</strong> Todos los estados financieros del año en una conversación para análisis cruzado</li>
+                </ul>
+                <div style="margin-top: 1em; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 10px; border-left: 4px solid #ef4444;">
+                    <p style="font-size: 0.55em; margin: 0;"><strong>Cuidado:</strong> Más contexto no significa meter todo sin pensar. El contenido en el "medio" del contexto se recuerda peor que el del inicio y final. Sé intencional con lo que cargas.</p>
+                </div>
             </div>
         </div>
 
@@ -945,91 +926,23 @@
             </div>
         </div>
 
-        <!-- SLIDE 14: 2.1 WHAT ARE ARTIFACTS -->
-        <div class="slide">
-            <div class="slide-content">
-                <h3 style="color: var(--color-m2);">2.1 &mdash; ¿Qué son los Artifacts?</h3>
-                <h2>Un panel donde Claude <em>crea</em></h2>
-                <!-- CSS Mockup: Artifact panel split view -->
-                <div style="max-width: 85%; margin: 16px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); display: flex; height: 250px; font-size: 0.38em; background: #1a1a2e;">
-                    <!-- Left: Chat -->
-                    <div style="width: 42%; border-right: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column;">
-                        <div style="padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--color-text-muted); font-weight: 600;">Conversación</div>
-                        <div style="flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 10px; overflow: hidden;">
-                            <div style="align-self: flex-end; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2); padding: 8px 12px; border-radius: 10px 10px 4px 10px; max-width: 85%; text-align: left; color: var(--color-text);">
-                                Crea un dashboard de ventas con KPIs, gráfico de barras por mes y gráfico de torta. Tema oscuro.
-                            </div>
-                            <div style="align-self: flex-start; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); padding: 8px 12px; border-radius: 4px 10px 10px 10px; max-width: 85%; text-align: left; color: var(--color-text-muted); line-height: 1.4;">
-                                <span style="color: var(--color-accent); font-weight: 600;">Claude:</span> He creado el dashboard con los componentes solicitados. Puedes verlo en el panel de artefactos &rarr;
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Right: Artifact panel -->
-                    <div style="flex: 1; display: flex; flex-direction: column; background: #13131f;">
-                        <div style="padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px;">
-                            <span style="color: var(--color-m2); font-weight: 600;">&#9998; Artifact</span>
-                            <span style="color: var(--color-text-muted); font-size: 0.9em;">Dashboard de Ventas</span>
-                        </div>
-                        <!-- Mini dashboard mockup -->
-                        <div style="flex: 1; padding: 12px; overflow: hidden;">
-                            <!-- KPIs row -->
-                            <div style="display: flex; gap: 6px; margin-bottom: 10px;">
-                                <div style="flex: 1; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
-                                    <div style="color: var(--color-text-muted); font-size: 0.85em;">Ingresos</div>
-                                    <div style="color: #10b981; font-size: 1.4em; font-weight: 700;">$2.4M</div>
-                                </div>
-                                <div style="flex: 1; background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
-                                    <div style="color: var(--color-text-muted); font-size: 0.85em;">Clientes</div>
-                                    <div style="color: #3b82f6; font-size: 1.4em; font-weight: 700;">1,847</div>
-                                </div>
-                                <div style="flex: 1; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
-                                    <div style="color: var(--color-text-muted); font-size: 0.85em;">Crecimiento</div>
-                                    <div style="color: #f59e0b; font-size: 1.4em; font-weight: 700;">+23%</div>
-                                </div>
-                            </div>
-                            <!-- Charts row -->
-                            <div style="display: flex; gap: 8px;">
-                                <!-- Bar chart -->
-                                <div style="flex: 1.2; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px;">
-                                    <div style="color: var(--color-text-muted); font-size: 0.85em; margin-bottom: 6px;">Ventas por Mes</div>
-                                    <div style="display: flex; align-items: flex-end; gap: 4px; height: 70px;">
-                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 45%;"></div>
-                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 60%;"></div>
-                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 40%;"></div>
-                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 75%;"></div>
-                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 55%;"></div>
-                                        <div style="flex: 1; background: linear-gradient(to top, #10b981, #34d399); border-radius: 3px 3px 0 0; height: 90%;"></div>
-                                    </div>
-                                    <div style="display: flex; gap: 4px; margin-top: 4px;">
-                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Ene</div>
-                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Feb</div>
-                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Mar</div>
-                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Abr</div>
-                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">May</div>
-                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Jun</div>
-                                    </div>
-                                </div>
-                                <!-- Pie chart approximation -->
-                                <div style="flex: 0.8; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; align-items: center;">
-                                    <div style="color: var(--color-text-muted); font-size: 0.85em; margin-bottom: 6px; align-self: flex-start;">Categorías</div>
-                                    <div style="width: 64px; height: 64px; border-radius: 50%; background: conic-gradient(#3b82f6 0% 40%, #10b981 40% 65%, #f59e0b 65% 85%, #8b5cf6 85% 100%); margin: 4px 0;"></div>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; justify-content: center;">
-                                        <span style="color: #3b82f6; font-size: 0.8em;">&#9679; SaaS</span>
-                                        <span style="color: #10b981; font-size: 0.8em;">&#9679; Retail</span>
-                                        <span style="color: #f59e0b; font-size: 0.8em;">&#9679; Serv.</span>
-                                        <span style="color: #8b5cf6; font-size: 0.8em;">&#9679; Otro</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p style="font-size: 0.6em; color: var(--color-text-muted);">
-                    En vez de solo <em>describir</em> el código, Claude lo <strong>renderiza en vivo</strong> al lado de la conversación.
-                </p>
+        <!-- SLIDE 14: 2.1 Artifacts en acción -->
+<div class="slide">
+    <div class="slide-content">
+        <h3 style="color: var(--color-m2);">2.1 — Artifacts en acción</h3>
+        <h2>De un prompt a una app interactiva</h2>
+        <div class="grid-2" style="margin-top: 0.8em;">
+            <div style="text-align: center;">
+                <img src="Screenshots/slide 14 - 1.png" alt="Claude creando un juego de trivia" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
+                <p style="font-size: 0.45em; color: var(--color-text-muted); margin-top: 0.5em;">Un prompt → una app completa con diseño, lógica y datos</p>
             </div>
-            <!-- Los artefactos transforman a Claude de un chatbot a un taller creativo. Mostrar cómo aparece el panel lateral automáticamente. -->
+            <div style="text-align: center;">
+                <img src="Screenshots/slide 14 - 2.png" alt="Juego de trivia funcionando" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
+                <p style="font-size: 0.45em; color: var(--color-text-muted); margin-top: 0.5em;">El resultado: juego interactivo con timer, datos curiosos y puntaje</p>
+            </div>
         </div>
+    </div>
+</div>
 
         <!-- SLIDE 15: ARTIFACT TYPES -->
         <div class="slide">
@@ -1069,7 +982,7 @@
         <!-- SLIDE 16: 2.2 DEMO: DASHBOARD -->
         <div class="slide">
             <div class="slide-content">
-                <h3 style="color: var(--color-m2);">2.2 &mdash; Demo en Vivo</h3>
+                <h3 style="color: var(--color-m2);">2.2 &mdash; El Prompt Inicial</h3>
                 <h2>Creando un Dashboard Interactivo</h2>
                 <div style="text-align: left; font-size: 0.6em; margin-top: 1em;">
                     <p style="color: var(--color-text-muted); margin-bottom: 0.8em;">Prompt de inicio:</p>
@@ -1078,7 +991,7 @@
                     </div>
                 </div>
                 <div class="fragment" style="margin-top: 1.2em;">
-                    <p style="font-size: 0.55em; color: var(--color-text-muted);">Iteraciones que haremos en vivo:</p>
+                    <p style="font-size: 0.55em; color: var(--color-text-muted);">Ejemplos de iteración:</p>
                     <div style="font-size: 0.5em; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                         <span style="background: rgba(59,130,246,0.15); padding: 6px 14px; border-radius: 8px;">"Agrega dark mode toggle"</span>
                         <span style="background: rgba(59,130,246,0.15); padding: 6px 14px; border-radius: 8px;">"Cambia a gráficos de línea"</span>
@@ -1120,52 +1033,7 @@
             <!-- Concepto clave: iterar es más efectivo que intentar un prompt perfecto. Empieza simple, refina. -->
         </div>
 
-        <!-- SLIDE 18: 2.3 ADVANCED TECHNIQUES -->
-        <div class="slide">
-            <div class="slide-content">
-                <h3 style="color: var(--color-m2);">2.3 &mdash; Técnicas Avanzadas</h3>
-                <h2>Más allá del dashboard</h2>
-                <div class="grid-2" style="margin-top: 0.8em;">
-                    <div class="card fragment">
-                        <h4 style="color: var(--color-m2);">Diagramas Mermaid</h4>
-                        <p>"Dibuja un diagrama de flujo del proceso de onboarding de nuestra empresa"</p>
-                        <pre style="margin-top: 8px;"><code class="language-text">graph TD
-    A[Nuevo empleado] --> B[RRHH]
-    B --> C{¿Tiene equipo?}
-    C -->|Sí| D[Setup]
-    C -->|No| E[Solicitar]</code></pre>
-                    </div>
-                    <div class="card fragment">
-                        <h4 style="color: var(--color-m2);">Publicar y Compartir</h4>
-                        <p>Click en <strong>"Publish"</strong> para obtener un link público. Cualquier persona puede ver el artefacto sin cuenta de Claude. Otros pueden hacer <strong>remix</strong> (fork) de tu creación.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Mostrar ejemplo de Mermaid: pedir un diagrama y ver cómo Claude lo renderiza. Mostrar el botón de Publish. -->
-        </div>
 
-        <!-- SLIDE 19: 2.4 EXERCISE -->
-        <div class="slide exercise-slide">
-            <div class="slide-content">
-                <div class="exercise-badge">Ejercicio Práctico</div>
-                <h2>Artifact Relay</h2>
-                <div style="text-align: left; font-size: 0.6em;">
-                    <ol>
-                        <li class="fragment">Pídele a Claude que cree un <strong>landing page personal</strong> como artefacto</li>
-                        <li class="fragment">Itera: <em>"Agrega una animación al header"</em></li>
-                        <li class="fragment">Itera: <em>"Cambia la paleta de colores a tonos de azul"</em></li>
-                        <li class="fragment">Itera: <em>"Agrega una sección de contacto con un formulario"</em></li>
-                    </ol>
-                </div>
-                <div class="fragment" style="margin-top: 1em; padding: 12px; background: rgba(59,130,246,0.1); border-radius: 10px;">
-                    <p style="font-size: 0.5em; margin: 0; color: var(--color-m2);">
-                        <strong>Bonus:</strong> Crea un diagrama Mermaid del flujo de trabajo de tu equipo
-                    </p>
-                </div>
-                <div class="timer">5 minutos &bull; Experimenta con el loop de iteración</div>
-            </div>
-            <!-- 5 minutos. El objetivo es que sientan el poder del loop de iteración. No importa si el resultado es perfecto, importa que entiendan el flujo. -->
-        </div>
 
         <!-- ============================================================ -->
         <!-- SLIDE 20: TRANSITION 2 → 3                                  -->
@@ -1268,27 +1136,23 @@
             <!-- Estos patrones son los más comunes en empresas. Preguntar a la audiencia: ¿cuáles les parecen más útiles para su trabajo? -->
         </div>
 
-        <!-- SLIDE 25: 3.4 EXERCISE -->
-        <div class="slide exercise-slide">
-            <div class="slide-content">
-                <div class="exercise-badge">Ejercicio Práctico</div>
-                <h2>Tu Primer Project</h2>
-                <div style="text-align: left; font-size: 0.6em;">
-                    <ol>
-                        <li class="fragment">Ve a <strong>claude.ai</strong> &rarr; <strong>Projects</strong> &rarr; <strong>Create Project</strong></li>
-                        <li class="fragment">Escribe instrucciones custom, por ejemplo:<br>
-                            <div class="prompt-box good" style="margin: 8px 0; font-size: 0.9em;">
-                                "Siempre responde en español. Usa un tono profesional pero accesible. Cuando des ejemplos de código, usa Python con type hints. Formatea las respuestas largas con headers y bullet points."
-                            </div>
-                        </li>
-                        <li class="fragment">Sube al menos un documento (un PDF, un .txt, cualquier referencia)</li>
-                        <li class="fragment">Inicia una conversación y verifica que Claude sigue las instrucciones</li>
-                    </ol>
-                </div>
-                <div class="timer">5 minutos &bull; Crea y prueba tu proyecto</div>
+        <!-- SLIDE 25: 3.4 Projects en acción -->
+<div class="slide">
+    <div class="slide-content">
+        <h3 style="color: var(--color-m3);">3.4 — Projects en acción</h3>
+        <h2>Así se ve un Project real</h2>
+        <div class="grid-2" style="margin-top: 0.8em;">
+            <div style="text-align: center;">
+                <img src="Screenshots/slide 25 - 1.png" alt="Vista de proyecto con archivos" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
+                <p style="font-size: 0.45em; color: var(--color-text-muted); margin-top: 0.5em;">Proyecto con instrucciones, archivos y conversaciones</p>
             </div>
-            <!-- 5 minutos. Ayudar a quienes tengan problemas creando el proyecto. Al final, preguntar: ¿notaron la diferencia con vs. sin instrucciones? -->
+            <div style="text-align: center;">
+                <img src="Screenshots/slide 25 - 2.png" alt="Claude analizando documentos del proyecto" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
+                <p style="font-size: 0.45em; color: var(--color-text-muted); margin-top: 0.5em;">Claude analizando los documentos del proyecto</p>
+            </div>
         </div>
+    </div>
+</div>
 
         <!-- ============================================================ -->
         <!-- SLIDE 26: BREAK                                             -->
@@ -1299,23 +1163,13 @@
                 <h2>Descanso</h2>
                 <p style="font-size: 0.6em; color: var(--color-text-muted);">5 minutos &bull; Estira las piernas, recarga café</p>
                 <div style="margin-top: 2em; padding: 20px; background: var(--color-surface); border-radius: 12px; display: inline-block;">
-                    <p style="font-size: 0.5em; margin: 0; color: var(--color-text-muted);">
-                        Cuando volvamos, Claude sale del browser<br>y se une a tu escritorio y tu terminal.
+                    <p style="font-size: 0.8em; margin: 0; color: var(--color-text-muted);">
+                        Cuando volvamos, Claude sale del browser y de su app<br>y se une a tu escritorio y tu terminal.
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- SLIDE 27: TRANSITION 3 → 4                                  -->
-        <!-- ============================================================ -->
-        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(139,92,246,0.1) 0%, var(--color-bg) 50%, rgba(245,158,11,0.1) 100%);">
-            <div class="slide-content">
-                <blockquote>
-                    Projects le dan a Claude memoria y contexto. Pero... ¿qué si Claude pudiera <em>hacer cosas</em> en tu computadora? Navegar archivos, editar documentos, ejecutar tareas...
-                </blockquote>
-            </div>
-        </div>
 
         <!-- ============================================================ -->
         <!-- SLIDE 28: MODULE 4 TITLE                                    -->
@@ -1345,7 +1199,7 @@
                     <tbody>
                         <tr class="fragment">
                             <td><strong style="color: var(--color-m1);">Chat</strong></td>
-                            <td>Browser (claude.ai)</td>
+                            <td>Browser y App (claude.ai)</td>
                             <td>Conversa, genera texto, crea artefactos</td>
                         </tr>
                         <tr class="fragment">
@@ -1555,33 +1409,50 @@
                 <h2>Delega una Tarea Real</h2>
                 <div style="text-align: left; font-size: 0.6em;">
                     <ol>
-                        <li class="fragment">Piensa en una tarea <strong>tedesca y repetitiva</strong> que hiciste esta semana</li>
+                        <li class="fragment">Piensa en una tarea <strong>tediosa y repetitiva</strong> que hiciste esta semana</li>
                         <li class="fragment">Escribe el prompt que usarías para delegarla a Cowork:
                             <div class="prompt-box good" style="margin: 8px 0; font-size: 0.9em;">
                                 "Tengo [X archivos] en [ubicación]. Necesito que [acción]. El formato de salida debe ser [formato]. Prioriza [criterio]."
                             </div>
                         </li>
-                        <li class="fragment">Comparte tu prompt con el grupo</li>
                     </ol>
                 </div>
                 <p class="fragment" style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 1em;">
                     Si tienes acceso a Cowork (Pro/Max): pruébalo en vivo
                 </p>
-                <div class="timer">5 minutos &bull; Diseña tu prompt de delegación</div>
             </div>
-            <!-- 5 minutos. Think-pair-share. Recoger 2-3 ejemplos del grupo y discutir cómo Claude los manejaría. Si alguien tiene Cowork, hacer demo en vivo con su caso real. -->
         </div>
 
-        <!-- ============================================================ -->
-        <!-- SLIDE 35: TRANSITION 4 → 5                                  -->
-        <!-- ============================================================ -->
-        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, var(--color-bg) 50%, rgba(239,68,68,0.1) 100%);">
+        <!-- SLIDE: Cowork ideas by department -->
+        <div class="slide">
             <div class="slide-content">
-                <blockquote>
-                    Cowork es ideal para tareas de escritorio. Pero los desarrolladores tienen una herramienta aún más directa: <em>Claude Code</em>, que vive en tu terminal y habla el idioma de tu codebase.
-                </blockquote>
+                <h3 style="color: var(--color-m4);">4.4 — Ideas por Área</h3>
+                <h2>Cowork en cada departamento</h2>
+                <div class="grid-3" style="margin-top: 0.8em; font-size: 0.95em;">
+                    <div class="card">
+                        <h4 style="color: var(--color-m4);">Finanzas</h4>
+                        <p>"Analiza estos estados financieros, identifica variaciones vs. presupuesto y genera un reporte para el comité"</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--color-m4);">Marketing</h4>
+                        <p>"Lee estas métricas de campaña, compáralas con el trimestre anterior y sugiere ajustes de presupuesto"</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--color-m4);">Legal</h4>
+                        <p>"Revisa este contrato, identifica cláusulas de riesgo y genera un resumen ejecutivo para el director"</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--color-m4);">RRHH</h4>
+                        <p>"Procesa estas evaluaciones de desempeño, identifica patrones y genera un plan de desarrollo por equipo"</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--color-m4);">Operaciones</h4>
+                        <p>"Analiza los reportes de incidentes del mes, clasifícalos por severidad y sugiere mejoras al proceso"</p>
+                    </div>
+                </div>
             </div>
         </div>
+
 
         <!-- ============================================================ -->
         <!-- SLIDE 36: MODULE 5 TITLE                                    -->
@@ -1631,7 +1502,7 @@ claude</code></pre>
             <div class="slide-content">
                 <h3 style="color: var(--color-m5);">5.2 &mdash; Claude Code en Práctica</h3>
                 <h2>Ejemplos reales</h2>
-                <div style="text-align: left; font-size: 0.55em;">
+                <div style="text-align: left; font-size: 0.65em;">
                     <div class="card fragment" style="margin-bottom: 12px; border-left: 4px solid var(--color-m5);">
                         <h4 style="color: var(--color-m5); margin-bottom: 4px;">Explorar</h4>
                         <code style="color: var(--color-text-muted);">&gt; "Explica la arquitectura de este proyecto"</code>
@@ -1682,10 +1553,52 @@ claude</code></pre>
             <!-- Punto clave para audiencia no técnica: las líneas con + son lo que Claude quiere agregar. Siempre puedes decir "no" o "ajusta esto". -->
         </div>
 
-        <!-- SLIDE 40: 5.3 INTRO TO MCP -->
+        <!-- SLIDE 40: 5.3 SLASH COMMANDS -->
         <div class="slide">
             <div class="slide-content">
-                <h3 style="color: var(--color-m5);">5.3 &mdash; Model Context Protocol (MCP)</h3>
+        <h3 style="color: var(--color-m5);">5.3 &mdash; Slash Commands</h3>
+        <h2>Comandos rápidos en Claude Code</h2>
+        <table style="margin-top: 0.8em;">
+            <thead>
+                <tr>
+                    <th>Comando</th>
+                    <th>Qué hace</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>/init</code></td>
+                    <td>Genera un CLAUDE.md con las convenciones de tu proyecto</td>
+                </tr>
+                <tr>
+                    <td><code>/compact</code></td>
+                    <td>Comprime el contexto de la conversación para liberar espacio</td>
+                </tr>
+                <tr>
+                    <td><code>/review</code></td>
+                    <td>Revisa los cambios pendientes antes de hacer commit</td>
+                </tr>
+                <tr>
+                    <td><code>/cost</code></td>
+                    <td>Muestra cuántos tokens has consumido en la sesión</td>
+                </tr>
+                <tr>
+                    <td><code>/doctor</code></td>
+                    <td>Diagnostica problemas de configuración</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 0.8em;">
+            Escribe <code>/</code> en Claude Code para ver todos los comandos disponibles.
+        </p>
+            </div>
+            <!-- Para no-devs: esto es como atajos de teclado, pero para Claude. Escribe / y elige el comando. -->
+        </div>
+
+        <!-- SLIDE 41: 5.4 INTRO TO MCP -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.4 &mdash; Model Context Protocol (MCP)</h3>
                 <h2>Los "plugins" de Claude</h2>
                 <p style="font-size: 0.6em; color: var(--color-text-muted); margin-bottom: 1em;">
                     MCPs son puentes que conectan Claude con servicios externos
@@ -1711,10 +1624,10 @@ claude</code></pre>
             <!-- MCP = Model Context Protocol. Es un estándar abierto creado por Anthropic. Permite que cualquier servicio se conecte a Claude de forma estandarizada. Hay MCPs oficiales y de la comunidad. -->
         </div>
 
-        <!-- SLIDE 41: COMMON MCPs -->
+        <!-- SLIDE 42: 5.4 COMMON MCPs -->
         <div class="slide">
             <div class="slide-content">
-                <h3 style="color: var(--color-m5);">5.3 &mdash; MCPs Comunes</h3>
+                <h3 style="color: var(--color-m5);">5.4 &mdash; MCPs Comunes</h3>
                 <h2>¿Con qué se puede conectar Claude?</h2>
                 <div class="grid-3" style="margin-top: 0.8em;">
                     <div class="card fragment">
@@ -1746,164 +1659,76 @@ claude</code></pre>
             <!-- La lista crece cada semana. El ecosistema MCP es open source y cualquiera puede crear un MCP server para su servicio. -->
         </div>
 
-        <!-- SLIDE 42: MCP CONFIGURATION -->
+        <!-- SLIDE 43: 5.5 HOOKS -->
         <div class="slide">
             <div class="slide-content">
-                <h3 style="color: var(--color-m5);">5.3 &mdash; Configuración</h3>
-                <h2>Activar un MCP Server</h2>
-                <pre><code class="language-json">// .claude/settings.json
-{
-  "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": [
-        "-y", "@anthropic-ai/mcp-server-github"
-      ],
-      "env": {
-        "GITHUB_TOKEN": "ghp_xxxx..."
-      }
-    },
-    "puppeteer": {
-      "command": "npx",
-      "args": [
-        "-y", "@anthropic-ai/mcp-server-puppeteer"
-      ]
-    }
-  }
-}</code></pre>
-                <p style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 0.8em;">
-                    Un archivo JSON, unos pocos líneas, y Claude tiene nuevos superpoderes.
-                </p>
+        <h3 style="color: var(--color-m5);">5.5 &mdash; Hooks</h3>
+        <h2>Automatización que se dispara sola</h2>
+        <p style="font-size: 0.7em; color: var(--color-text-muted); margin-bottom: 0.8em;">
+            Los hooks son <strong>acciones automáticas</strong> que se ejecutan cuando Claude Code hace algo. Piensa en ellos como "si pasa esto, haz esto otro".
+        </p>
+        <div class="grid-3" style="margin-top: 0.5em;">
+            <div class="card">
+                <h4 style="color: var(--color-m5);">Después de escribir</h4>
+                <p>Claude edita un archivo → automáticamente se formatea con Prettier</p>
             </div>
-            <!-- Para no-devs: esto es como instalar una extensión en tu navegador, pero para Claude. Para devs: la config es simple, el token va en env vars por seguridad. -->
-        </div>
-
-        <!-- SLIDE 43: 5.4 DEMO: MCPs -->
-        <div class="slide">
-            <div class="slide-content">
-                <h3 style="color: var(--color-m5);">5.4 &mdash; Demo: MCPs en Acción</h3>
-                <h2>GitHub + Puppeteer</h2>
-                <div class="grid-2" style="margin-top: 0.8em;">
-                    <div>
-                        <div class="prompt-box good" style="font-size: 0.9em;">
-                            <strong>GitHub MCP:</strong><br>
-                            "Lista los issues abiertos del repo y crea un branch para el issue #42"
-                        </div>
-                        <!-- CSS Mockup: GitHub MCP terminal -->
-                        <div style="margin-top: 12px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); background: #0d1117; font-size: 0.75em; font-family: 'JetBrains Mono', monospace; text-align: left;">
-                            <div style="padding: 6px 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; gap: 6px;">
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span>
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
-                                <span style="color: var(--color-text-muted); font-size: 0.8em; margin-left: 8px;">Terminal</span>
-                            </div>
-                            <div style="padding: 10px 14px; line-height: 1.6; font-size: 0.85em;">
-                                <div><span style="color: #8b5cf6;">&#9654; mcp_github_list_issues</span></div>
-                                <div style="color: var(--color-text-muted); padding-left: 12px;">#42 <span style="color: #10b981;">Fix login timeout</span></div>
-                                <div style="color: var(--color-text-muted); padding-left: 12px;">#41 <span style="color: #3b82f6;">Add user avatar upload</span></div>
-                                <div style="color: var(--color-text-muted); padding-left: 12px;">#39 <span style="color: #f59e0b;">Update API docs</span></div>
-                                <div style="margin-top: 6px;"><span style="color: #8b5cf6;">&#9654; mcp_github_create_branch</span></div>
-                                <div style="color: #10b981; padding-left: 12px;">&#10003; Branch <span style="color: var(--color-text);">fix/issue-42-login-timeout</span> created</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="prompt-box good" style="font-size: 0.9em;">
-                            <strong>Puppeteer MCP:</strong><br>
-                            "Abre nuestro staging site, toma un screenshot del login y verifica que el logo cargue"
-                        </div>
-                        <!-- CSS Mockup: Puppeteer MCP terminal -->
-                        <div style="margin-top: 12px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); background: #0d1117; font-size: 0.75em; font-family: 'JetBrains Mono', monospace; text-align: left;">
-                            <div style="padding: 6px 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; gap: 6px;">
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span>
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>
-                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
-                                <span style="color: var(--color-text-muted); font-size: 0.8em; margin-left: 8px;">Terminal</span>
-                            </div>
-                            <div style="padding: 10px 14px; line-height: 1.6; font-size: 0.85em;">
-                                <div><span style="color: #8b5cf6;">&#9654; mcp_puppeteer_navigate</span></div>
-                                <div style="color: var(--color-text-muted); padding-left: 12px;">Navigating to <span style="color: #3b82f6;">https://staging.example.com/login</span></div>
-                                <div style="color: #10b981; padding-left: 12px;">&#10003; Page loaded (1.2s)</div>
-                                <div style="margin-top: 6px;"><span style="color: #8b5cf6;">&#9654; mcp_puppeteer_screenshot</span></div>
-                                <div style="color: var(--color-text-muted); padding-left: 12px;">&#128247; Screenshot saved</div>
-                                <div style="margin-top: 6px; padding: 6px 10px; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.15); border-radius: 4px; display: flex; align-items: center; gap: 8px;">
-                                    <span style="font-size: 1.2em;">&#127760;</span>
-                                    <div>
-                                        <div style="color: var(--color-text); font-size: 0.9em;">login_screenshot.png</div>
-                                        <div style="color: #10b981; font-size: 0.8em;">Logo detectado &#10003; | Form visible &#10003;</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="card">
+                <h4 style="color: var(--color-m5);">Después de un commit</h4>
+                <p>Claude hace commit → automáticamente corren los tests</p>
             </div>
-            <!-- Si hay demos en vivo disponibles: mostrar Claude interactuando con GitHub y Puppeteer. Si no: mostrar screenshots del flujo. Punto clave: Claude no simula — realmente ejecuta acciones en los servicios. -->
+            <div class="card">
+                <h4 style="color: var(--color-m5);">Antes de un comando</h4>
+                <p>Claude quiere ejecutar algo → primero valida que sea seguro</p>
+            </div>
         </div>
-
-        <!-- SLIDE 44: 5.4b HOOKS -->
-        <div class="slide">
-            <div class="slide-content">
-                <h3 style="color: var(--color-m5);">5.4 &mdash; Bonus: Hooks</h3>
-                <h2>Automatización con hooks</h2>
-                <p style="font-size: 0.6em; color: var(--color-text-muted); margin-bottom: 1em;">
-                    Hooks ejecutan comandos automáticamente en respuesta a eventos de Claude Code
-                </p>
-                <pre><code class="language-json">// settings.json
-{
-  "hooks": {
-    "afterWrite": [
-      {
-        "command": "npx prettier --write $FILE_PATH",
-        "description": "Auto-format después de cada escritura"
-      }
-    ]
-  }
-}</code></pre>
-                <ul style="font-size: 0.55em;" class="fragment">
-                    <li><strong>afterWrite:</strong> auto-format, lint, etc.</li>
-                    <li><strong>afterCommit:</strong> run tests, notify Slack</li>
-                    <li><strong>beforeCommand:</strong> validaciones de seguridad</li>
-                </ul>
+        <p style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 0.8em;">Son como las "automatizaciones" de tu celular, pero para tu código.</p>
             </div>
             <!-- Los hooks son el puente entre Claude Code y tu pipeline de desarrollo. Permiten automatizar validaciones y acciones sin intervención manual. -->
         </div>
 
-        <!-- SLIDE 45: 5.5 EXERCISE -->
-        <div class="slide exercise-slide">
-            <div class="slide-content">
-                <div class="exercise-badge">Ejercicio Práctico</div>
-                <h2>Diseña tu Stack MCP</h2>
-                <div style="text-align: left; font-size: 0.6em;">
-                    <ol>
-                        <li class="fragment">Lista los <strong>3 servicios externos</strong> que más usas en tu trabajo diario
-                            <p style="font-size: 0.85em; color: var(--color-text-muted);">(ej: Jira, Slack, PostgreSQL, AWS, Google Sheets...)</p>
-                        </li>
-                        <li class="fragment">Para cada uno, escribe <strong>3 comandos ideales</strong> que querrías que Claude ejecutara
-                            <div class="prompt-box good" style="margin: 8px 0; font-size: 0.9em;">
-                                "Slack MCP: search_messages, send_notification, summarize_channel"
-                            </div>
-                        </li>
-                        <li class="fragment">Busca si existe un MCP para ese servicio en<br>
-                            <strong>github.com/modelcontextprotocol</strong>
-                        </li>
-                    </ol>
-                </div>
-                <div class="timer">5 minutos &bull; Diseño conceptual + exploración</div>
+        <!-- SLIDE 44: 5.6 Subagentes y Paralelización -->
+<div class="slide">
+    <div class="slide-content">
+        <h3 style="color: var(--color-m5);">5.6 &mdash; Temas Avanzados</h3>
+        <h2>Subagentes y Paralelización</h2>
+        <div class="grid-2" style="margin-top: 0.8em;">
+            <div class="card" style="border-left: 4px solid var(--color-m5);">
+                <h4 style="color: var(--color-m5);">Subagentes</h4>
+                <p>Claude Code puede lanzar agentes especializados en paralelo. Cada uno trabaja en una parte del problema con su propio contexto y herramientas.</p>
             </div>
-            <!-- 5 minutos. Ejercicio de diseño, no de implementación. El objetivo es que piensen en cómo Claude puede conectarse a sus herramientas. Compartir 2-3 stacks del grupo. -->
+            <div class="card" style="border-left: 4px solid var(--color-m5);">
+                <h4 style="color: var(--color-m5);">Paralelización</h4>
+                <p>En vez de analizar archivos uno por uno, Claude puede distribuir el trabajo: un agente revisa código, otro la documentación, otro los tests — al mismo tiempo.</p>
+            </div>
         </div>
+        <div style="margin-top: 1em; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 10px;">
+            <p style="font-size: 0.55em; margin: 0; color: var(--color-m5);"><strong>Resultado:</strong> Tareas que tomarían 20 minutos secuencialmente se completan en 3-4 minutos.</p>
+        </div>
+    </div>
+</div>
 
-        <!-- ============================================================ -->
-        <!-- SLIDE 46: TRANSITION 5 → 6                                  -->
-        <!-- ============================================================ -->
-        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(239,68,68,0.1) 0%, var(--color-bg) 50%, rgba(212,160,23,0.1) 100%);">
-            <div class="slide-content">
-                <blockquote>
-                    Ya tienes todas las piezas. Ahora veamos cómo se <em>combinan</em> para crear flujos de trabajo completos.
-                </blockquote>
+        <!-- SLIDE 45: 5.6 Memoria, Claude.md y Custom Commands -->
+<div class="slide">
+    <div class="slide-content">
+        <h3 style="color: var(--color-m5);">5.6 &mdash; Hacia adelante</h3>
+        <h2>Cuánto más se puede hacer</h2>
+        <div style="text-align: left; font-size: 0.7em; margin-top: 0.8em;">
+            <div class="card" style="margin-bottom: 12px; border-left: 4px solid var(--color-m5);">
+                <h4 style="color: var(--color-m5);">Memoria persistente</h4>
+                <p>Claude Code recuerda tus preferencias, convenciones y decisiones entre sesiones. No necesitas repetir contexto.</p>
+            </div>
+            <div class="card" style="margin-bottom: 12px; border-left: 4px solid var(--color-m5);">
+                <h4 style="color: var(--color-m5);">CLAUDE.md</h4>
+                <p>Un archivo en tu repo que Claude lee automáticamente. Define reglas del proyecto, stack tecnológico, convenciones de código — tu "manual del proyecto" para la IA.</p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--color-m5);">
+                <h4 style="color: var(--color-m5);">Custom Slash Commands</h4>
+                <p>Crea tus propios comandos reutilizables: <code>/deploy</code>, <code>/review</code>, <code>/test</code> — workflows personalizados que ejecutas con una palabra.</p>
             </div>
         </div>
+    </div>
+</div>
+
 
         <!-- ============================================================ -->
         <!-- SLIDE 47: MODULE 6 TITLE                                    -->
@@ -2020,27 +1845,7 @@ claude</code></pre>
             <!-- Dar tiempo para que la audiencia tome nota o fotografíe los recursos. Mencionar que la documentación de MCPs crece cada semana. -->
         </div>
 
-        <!-- SLIDE 51: CALL TO ACTION -->
-        <div class="slide">
-            <div class="slide-content">
-                <h2 style="color: var(--color-m6);">Tu misión esta semana</h2>
-                <div style="font-size: 0.75em; margin-top: 1em;">
-                    <p class="fragment" style="padding: 16px; background: var(--color-surface); border-radius: 10px; border-left: 4px solid var(--color-m6);">
-                        Elige <strong>un flujo de trabajo</strong> real de tu día a día y ejecútalo a través de Claude usando el modo apropiado.
-                    </p>
-                </div>
-                <div class="fragment" style="margin-top: 2em;">
-                    <div style="font-size: 0.55em; color: var(--color-text-muted);">
-                        <p>No técnico &rarr; empieza con <strong style="color: var(--color-m3);">Projects</strong></p>
-                        <p>Semi-técnico &rarr; prueba <strong style="color: var(--color-m4);">Cowork</strong></p>
-                        <p>Desarrollador &rarr; instala <strong style="color: var(--color-m5);">Claude Code</strong> y configura un MCP</p>
-                    </div>
-                </div>
-            </div>
-            <!-- El call to action es específico y accionable. No es "usa más Claude", es "elige UN flujo y ejecútalo esta semana". Preguntar si hay dudas finales. -->
-        </div>
-
-        <!-- SLIDE 52: FINAL SLIDE -->
+        <!-- SLIDE: GRACIAS -->
         <div class="slide" style="background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #2d1b4e 100%);">
             <div class="slide-content">
                 <h1 style="font-size: 2em; margin-bottom: 0.3em;">
@@ -2065,9 +1870,35 @@ claude</code></pre>
                 <div style="font-size: 0.45em; color: var(--color-text-muted);">
                     <p style="margin: 0.3em;">Preguntas &bull; Feedback &bull; Contacto</p>
                 </div>
+                <p style="font-size: 0.4em; color: var(--color-text-muted); margin-top: 1.5em; font-style: italic;">
+                    A continuación: demo en vivo de Claude Code para quienes quieran quedarse
+                </p>
             </div>
             <!-- Slide final. Agradecer. Abrir espacio para preguntas finales. Recordar el call to action de la semana. -->
         </div>
+
+        <!-- SLIDE: MEGA PROMPT DEMO -->
+<div class="slide" style="background: linear-gradient(135deg, var(--color-bg) 60%, rgba(212,160,23,0.2) 100%);">
+    <div class="slide-content">
+        <h3 style="color: var(--color-m6);">Demo en Vivo</h3>
+        <h2>El poder de Claude Code en acción</h2>
+        <div style="text-align: left; margin-top: 0.8em;">
+            <div class="prompt-box good" style="font-size: 0.65em; line-height: 1.6;">
+                <strong style="color: var(--color-m6);">Mega Prompt para el demo:</strong><br><br>
+                "Analiza todos los archivos que te proporcioné sobre el consejo de administración y la información financiera de la compañía. Primero, entiende a fondo el contenido de cada documento. Luego:<br><br>
+                1. <strong>Documenta</strong> qué contiene cada archivo (tipo de documento, periodo, métricas clave)<br>
+                2. <strong>Paraleliza</strong> el análisis usando agentes especializados — uno para datos financieros, otro para actas de consejo, otro para indicadores de negocio<br>
+                3. <strong>Crea una aplicación interactiva en HTML</strong> que incluya:<br>
+                &nbsp;&nbsp;&nbsp;- Tablas comparativas por periodo<br>
+                &nbsp;&nbsp;&nbsp;- Gráficas de tendencias (ingresos, EBITDA, ocupación)<br>
+                &nbsp;&nbsp;&nbsp;- Recomendaciones estratégicas basadas en los datos<br>
+                &nbsp;&nbsp;&nbsp;- Un executive summary visual<br><br>
+                Usa un diseño profesional con tema oscuro."
+            </div>
+        </div>
+        <p style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 0.8em;">Este prompt combina: Projects + Claude Code + Subagentes + Artefactos</p>
+    </div>
+</div>
 
     </div><!-- /.slides-container -->
 
