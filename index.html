@@ -1,0 +1,2174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Dominando Claude AI — Del Primer Prompt a la Automatización Total</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css">
+    <style>
+        :root {
+            --color-bg: #0f0f1a;
+            --color-surface: #1a1a2e;
+            --color-text: #e2e8f0;
+            --color-text-muted: #94a3b8;
+            --color-accent: #d97706;
+            --color-m0: #d97706;
+            --color-m1: #10b981;
+            --color-m2: #3b82f6;
+            --color-m3: #8b5cf6;
+            --color-m4: #f59e0b;
+            --color-m5: #ef4444;
+            --color-m6: #d4a017;
+            --color-exercise: #eab308;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--color-bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: clamp(20px, 2.8vw, 38px);
+            color: var(--color-text);
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-accent), #f59e0b);
+            z-index: 1000;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        /* ===== SLIDE COUNTER ===== */
+        #slide-counter {
+            position: fixed;
+            bottom: 16px;
+            right: 24px;
+            font-size: 0.5em;
+            color: var(--color-text-muted);
+            z-index: 1000;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ===== SLIDES CONTAINER ===== */
+        .slides-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 5vw;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-content {
+            max-width: 85vw;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            text-transform: none;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: 2.4em; }
+        h2 { font-size: 1.6em; margin-bottom: 0.4em; }
+        h3 { font-size: 1.2em; color: var(--color-text-muted); font-weight: 600; margin-bottom: 0.3em; }
+
+        p { margin-bottom: 0.5em; }
+
+        code, pre code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        pre {
+            width: 100%;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 0.55em;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            display: block;
+            padding: 16px !important;
+            border-radius: 12px;
+        }
+
+        ul, ol {
+            display: block;
+            text-align: left;
+            padding-left: 1.2em;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+            line-height: 1.5;
+        }
+
+        /* ===== FRAGMENT ANIMATIONS ===== */
+        .fragment {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .slide.active .fragment {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide.active .fragment:nth-child(1) { transition-delay: 0.05s; }
+        .slide.active .fragment:nth-child(2) { transition-delay: 0.15s; }
+        .slide.active .fragment:nth-child(3) { transition-delay: 0.25s; }
+        .slide.active .fragment:nth-child(4) { transition-delay: 0.35s; }
+        .slide.active .fragment:nth-child(5) { transition-delay: 0.45s; }
+        .slide.active .fragment:nth-child(6) { transition-delay: 0.55s; }
+        .slide.active .fragment:nth-child(7) { transition-delay: 0.65s; }
+        .slide.active .fragment:nth-child(8) { transition-delay: 0.75s; }
+        .slide.active .fragment:nth-child(9) { transition-delay: 0.85s; }
+        .slide.active .fragment:nth-child(10) { transition-delay: 0.95s; }
+
+        /* Fragments inside containers (not direct children) */
+        .slide.active .grid-2 .fragment,
+        .slide.active .grid-3 .fragment,
+        .slide.active .skill-tree .fragment,
+        .slide.active .arch-diagram .fragment,
+        .slide.active .framework-box .fragment,
+        .slide.active table .fragment,
+        .slide.active ol .fragment,
+        .slide.active ul .fragment {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide.active .grid-2 .fragment:nth-child(1),
+        .slide.active .grid-3 .fragment:nth-child(1),
+        .slide.active .skill-tree .fragment:nth-child(1),
+        .slide.active table .fragment:nth-child(1),
+        .slide.active .framework-box .fragment:nth-child(1),
+        .slide.active ol .fragment:nth-child(1),
+        .slide.active ul .fragment:nth-child(1) { transition-delay: 0.1s; }
+
+        .slide.active .grid-2 .fragment:nth-child(2),
+        .slide.active .grid-3 .fragment:nth-child(2),
+        .slide.active .skill-tree .fragment:nth-child(2),
+        .slide.active table .fragment:nth-child(2),
+        .slide.active .framework-box .fragment:nth-child(2),
+        .slide.active ol .fragment:nth-child(2),
+        .slide.active ul .fragment:nth-child(2) { transition-delay: 0.2s; }
+
+        .slide.active .grid-2 .fragment:nth-child(3),
+        .slide.active .grid-3 .fragment:nth-child(3),
+        .slide.active .skill-tree .fragment:nth-child(3),
+        .slide.active table .fragment:nth-child(3),
+        .slide.active .framework-box .fragment:nth-child(3),
+        .slide.active ol .fragment:nth-child(3),
+        .slide.active ul .fragment:nth-child(3) { transition-delay: 0.3s; }
+
+        .slide.active .grid-2 .fragment:nth-child(4),
+        .slide.active .grid-3 .fragment:nth-child(4),
+        .slide.active .skill-tree .fragment:nth-child(4),
+        .slide.active table .fragment:nth-child(4),
+        .slide.active .framework-box .fragment:nth-child(4),
+        .slide.active ol .fragment:nth-child(4),
+        .slide.active ul .fragment:nth-child(4) { transition-delay: 0.4s; }
+
+        .slide.active .grid-2 .fragment:nth-child(5),
+        .slide.active .grid-3 .fragment:nth-child(5),
+        .slide.active .skill-tree .fragment:nth-child(5),
+        .slide.active table .fragment:nth-child(5),
+        .slide.active .framework-box .fragment:nth-child(5),
+        .slide.active ol .fragment:nth-child(5),
+        .slide.active ul .fragment:nth-child(5) { transition-delay: 0.5s; }
+
+        .slide.active .grid-2 .fragment:nth-child(6),
+        .slide.active .grid-3 .fragment:nth-child(6),
+        .slide.active .skill-tree .fragment:nth-child(6),
+        .slide.active table .fragment:nth-child(6),
+        .slide.active .framework-box .fragment:nth-child(6),
+        .slide.active ol .fragment:nth-child(6),
+        .slide.active ul .fragment:nth-child(6) { transition-delay: 0.6s; }
+
+        .slide.active .grid-2 .fragment:nth-child(7),
+        .slide.active .grid-3 .fragment:nth-child(7),
+        .slide.active .skill-tree .fragment:nth-child(7) { transition-delay: 0.7s; }
+
+        .slide.active .grid-2 .fragment:nth-child(8),
+        .slide.active .grid-3 .fragment:nth-child(8),
+        .slide.active .skill-tree .fragment:nth-child(8) { transition-delay: 0.8s; }
+
+        .slide.active .grid-2 .fragment:nth-child(9),
+        .slide.active .grid-3 .fragment:nth-child(9),
+        .slide.active .skill-tree .fragment:nth-child(9) { transition-delay: 0.9s; }
+
+        /* standalone fragments (not in a grid) */
+        .slide.active > .slide-content > .fragment:nth-child(1) { transition-delay: 0.1s; }
+        .slide.active > .slide-content > .fragment:nth-child(2) { transition-delay: 0.2s; }
+        .slide.active > .slide-content > .fragment:nth-child(3) { transition-delay: 0.3s; }
+        .slide.active > .slide-content > .fragment:nth-child(4) { transition-delay: 0.4s; }
+        .slide.active > .slide-content > .fragment:nth-child(5) { transition-delay: 0.5s; }
+        .slide.active > .slide-content > .fragment:nth-child(6) { transition-delay: 0.6s; }
+
+        /* ===== CONTENT WIDTH CONSTRAINTS ===== */
+        .grid-2, .grid-3 {
+            max-width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        table {
+            max-width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .framework-box {
+            max-width: 85%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .arch-diagram {
+            max-width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== MODULE TITLE SLIDES ===== */
+        .module-title .module-number {
+            font-size: 1em;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5em;
+            opacity: 0.8;
+        }
+
+        .module-title h2 {
+            font-size: 2em;
+            margin-bottom: 0.3em;
+        }
+
+        .module-title .module-subtitle {
+            font-size: 0.7em;
+            color: var(--color-text-muted);
+            font-weight: 300;
+        }
+
+        .module-title .module-time {
+            margin-top: 1.5em;
+            font-size: 0.5em;
+            padding: 0.3em 1em;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            color: var(--color-text-muted);
+            display: inline-block;
+        }
+
+        /* ===== BADGE / PILL ===== */
+        .badge {
+            display: inline-block;
+            padding: 0.15em 0.7em;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* ===== SCREENSHOT PLACEHOLDER ===== */
+        .screenshot-placeholder {
+            background: var(--color-surface);
+            border: 2px dashed rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            margin: 20px auto;
+            max-width: 80%;
+            position: relative;
+        }
+
+        .screenshot-placeholder .icon {
+            font-size: 2em;
+            margin-bottom: 0.3em;
+            opacity: 0.5;
+        }
+
+        .screenshot-placeholder p {
+            font-size: 0.55em;
+            color: var(--color-text-muted);
+            margin: 0;
+            font-style: italic;
+        }
+
+        /* ===== EXERCISE SLIDES ===== */
+        .exercise-slide {
+            border-left: 6px solid var(--color-exercise);
+            background: linear-gradient(135deg, rgba(234,179,8,0.05) 0%, transparent 60%);
+        }
+
+        .exercise-slide .exercise-badge {
+            background: var(--color-exercise);
+            color: #000;
+            padding: 0.2em 0.8em;
+            border-radius: 20px;
+            font-size: 0.45em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: inline-block;
+            margin-bottom: 0.8em;
+        }
+
+        .exercise-slide h2 {
+            color: var(--color-exercise);
+        }
+
+        .exercise-slide .timer {
+            margin-top: 1em;
+            font-size: 0.6em;
+            color: var(--color-exercise);
+            font-weight: 600;
+        }
+
+        /* ===== TRANSITION SLIDES ===== */
+        .transition-slide blockquote {
+            border: none;
+            font-size: 1.3em;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--color-text);
+            max-width: 80%;
+            text-align: center;
+            padding: 0;
+            background: none;
+            box-shadow: none;
+            margin: 0 auto;
+        }
+
+        .transition-slide blockquote::before {
+            content: '\201C';
+            font-size: 3em;
+            line-height: 0;
+            vertical-align: -0.5em;
+            opacity: 0.3;
+        }
+
+        /* ===== COMPARISON TABLE ===== */
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            font-size: 0.6em;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table th {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 16px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* ===== GRID LAYOUT ===== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            text-align: left;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: left;
+        }
+
+        .prompt-label {
+            text-align: left;
+        }
+
+        .card {
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .card h4 {
+            margin: 0 0 0.5em 0;
+            font-size: 0.8em;
+        }
+
+        .card p {
+            font-size: 0.55em;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+
+        /* ===== SKILL TREE ===== */
+        .skill-tree {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .skill-node {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.55em;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+        }
+
+        .skill-arrow {
+            font-size: 1.2em;
+            color: var(--color-text-muted);
+        }
+
+        /* ===== FRAMEWORK BOX ===== */
+        .framework-box {
+            background: var(--color-surface);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .framework-letter {
+            font-size: 1.5em;
+            font-weight: 900;
+            display: inline-block;
+            width: 1.5em;
+            text-align: center;
+        }
+
+        .framework-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+            font-size: 0.7em;
+        }
+
+        /* ===== PROMPT COMPARISON ===== */
+        .prompt-box {
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            font-size: 0.55em;
+            line-height: 1.6;
+        }
+
+        .prompt-box.bad {
+            border-left: 4px solid #ef4444;
+        }
+
+        .prompt-box.good {
+            border-left: 4px solid #10b981;
+        }
+
+        .prompt-label {
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5em;
+        }
+
+        /* ===== ARCHITECTURE DIAGRAM ===== */
+        .arch-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .arch-box {
+            padding: 18px 24px;
+            border-radius: 12px;
+            font-size: 0.6em;
+            font-weight: 600;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .arch-arrow {
+            font-size: 1.5em;
+            color: var(--color-text-muted);
+        }
+
+        /* ===== PROGRESS DOTS ===== */
+        .module-progress {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 2em;
+        }
+
+        .module-progress .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .module-progress .dot.active {
+            opacity: 1;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        /* ===== KEY CONCEPT ===== */
+        .key-concept {
+            font-size: 1.8em;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* ===== ICON LIST ===== */
+        .icon-list {
+            list-style: none !important;
+            margin-left: 0 !important;
+        }
+
+        .icon-list li::before {
+            margin-right: 0.5em;
+        }
+
+        /* ===== BREAK SLIDE ===== */
+        .break-slide {
+            text-align: center;
+        }
+
+        .break-slide .coffee {
+            font-size: 4em;
+            margin-bottom: 0.3em;
+        }
+
+        /* ===== GROW-IN ANIMATION ===== */
+        .fragment.grow-in {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s ease;
+        }
+
+        .slide.active .fragment.grow-in {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ===== KBD STYLING ===== */
+        kbd {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div id="progress-bar"></div>
+    <div id="slide-counter"></div>
+
+    <div class="slides-container" id="slides-container">
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 1: TITLE SLIDE (MODULE 0)                             -->
+        <!-- ============================================================ -->
+        <div class="slide" style="background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #2d1b4e 100%);">
+            <div class="slide-content">
+                <div style="margin-bottom: 1em;">
+                    <span style="font-size: 0.5em; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent);">Curso de IA</span>
+                </div>
+                <h1 style="font-size: 2em; line-height: 1.1; margin-bottom: 0.2em;">
+                    Dominando<br>
+                    <span style="color: var(--color-accent);">Claude</span>
+                </h1>
+                <p style="font-size: 0.6em; color: var(--color-text-muted); font-weight: 300;">
+                    Desde un primer prompt hasta la automatización total
+                </p>
+                <div style="margin-top: 2em; font-size: 0.45em; color: var(--color-text-muted);">
+                    <p style="margin: 0;">Usa <kbd>&rarr;</kbd> para avanzar &bull; <kbd>&larr;</kbd> para retroceder</p>
+                </div>
+            </div>
+            <!-- Bienvenida. Presentar el curso: 2 horas, 6 módulos, de principiante a experto. Preguntar: ¿Quiénes han usado Claude? ¿ChatGPT? ¿Algún LLM? -->
+        </div>
+
+        <!-- SLIDE 2: SKILL TREE -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Lo que construiremos hoy</h2>
+                <p style="font-size: 0.6em; color: var(--color-text-muted); margin-bottom: 1em;">Cada módulo expande lo que Claude puede hacer por ti</p>
+                <div class="skill-tree">
+                    <div class="skill-node fragment" style="background: var(--color-m1);">Chat</div>
+                    <span class="skill-arrow fragment">&rarr;</span>
+                    <div class="skill-node fragment" style="background: var(--color-m2);">Artefactos</div>
+                    <span class="skill-arrow fragment">&rarr;</span>
+                    <div class="skill-node fragment" style="background: var(--color-m3);">Proyectos</div>
+                    <span class="skill-arrow fragment">&rarr;</span>
+                    <div class="skill-node fragment" style="background: var(--color-m4);">Cowork</div>
+                    <span class="skill-arrow fragment">&rarr;</span>
+                    <div class="skill-node fragment" style="background: var(--color-m5);">Code + MCPs</div>
+                </div>
+                <div class="fragment" style="margin-top: 1.5em;">
+                    <div style="font-size: 0.5em; display: flex; justify-content: center; gap: 30px; color: var(--color-text-muted);">
+                        <span>Claude lee tu <strong style="color: var(--color-m1);">texto</strong></span>
+                        <span>&rarr;</span>
+                        <span>Claude crea <strong style="color: var(--color-m2);">contenido</strong></span>
+                        <span>&rarr;</span>
+                        <span>Claude recuerda tu <strong style="color: var(--color-m3);">contexto</strong></span>
+                        <span>&rarr;</span>
+                        <span>Claude actúa en tu <strong style="color: var(--color-m5);">infraestructura</strong></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Modelo mental del curso: esfera de influencia expandida. Cada módulo amplía el alcance de Claude. -->
+        </div>
+
+        <!-- SLIDE 3: PREREQUISITES -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Antes de empezar</h2>
+                <div class="grid-2" style="margin-top: 1em;">
+                    <div class="card">
+                        <h4 style="color: var(--color-m1);">Módulos 1-3 (Todos)</h4>
+                        <p>Una cuenta en <strong>claude.ai</strong> (el plan gratuito funciona)<br>Un browser moderno (Chrome, Firefox, incluso Edge)</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--color-m5);">Módulos 4-5 (Un poco más avanzado)</h4>
+                        <p><strong>Node.js</strong> instalado, <br> permisos de administrador (para Claude Code),<br>Plan <strong>Pro/Max</strong> recomendado<br>Acceso a una terminal</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Verificar con la audiencia: ¿todos tienen cuenta en claude.ai? Si alguien no tiene, que la creen ahora. Los módulos 4-5 son más técnicos pero todos pueden seguir la lógica. -->
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 4: MODULE 1 TITLE                                     -->
+        <!-- ============================================================ -->
+        <div class="slide module-title" style="background: linear-gradient(135deg, var(--color-bg) 60%, rgba(16,185,129,0.15) 100%);">
+            <div class="slide-content">
+                <div class="module-number" style="color: var(--color-m1);">Módulo 01</div>
+                <h2>La introducción mínima<br>a Claude</h2>
+                <p class="module-subtitle">La interfaz, los modelos y el arte del prompting</p>
+                <div class="module-time">20 minutos</div>
+            </div>
+            <!-- Módulo 1: Fundamentos. Todo el mundo puede participar. Cuenta gratuita suficiente. -->
+        </div>
+
+        <!-- SLIDE 5: 1.1 INTERFACE TOUR -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m1);">1.1 &mdash; Tour de la Interfaz</h3>
+                <h2>claude.ai por dentro</h2>
+                <!-- CSS Mockup: claude.ai interface -->
+                <div style="max-width: 85%; margin: 16px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); display: flex; height: 260px; font-size: 0.4em; background: #1a1a2e;">
+                    <!-- Sidebar -->
+                    <div style="width: 180px; background: #12121f; border-right: 1px solid rgba(255,255,255,0.08); padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="background: rgba(217,119,6,0.2); color: var(--color-accent); padding: 8px 12px; border-radius: 8px; font-weight: 600; text-align: center; cursor: pointer;">+ Nueva conversación</div>
+                        <div style="margin-top: 8px; font-size: 0.85em; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Recientes</div>
+                        <div style="padding: 6px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--color-text); font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Análisis de ventas Q4</div>
+                        <div style="padding: 6px 10px; border-radius: 6px; color: var(--color-text-muted); font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Refactorizar API auth</div>
+                        <div style="padding: 6px 10px; border-radius: 6px; color: var(--color-text-muted); font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Email para cliente</div>
+                        <div style="padding: 6px 10px; border-radius: 6px; color: var(--color-text-muted); font-size: 0.9em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Plan de marketing 2026</div>
+                    </div>
+                    <!-- Main area -->
+                    <div style="flex: 1; display: flex; flex-direction: column;">
+                        <!-- Top bar with model selector -->
+                        <div style="padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 10px;">
+                            <div style="background: rgba(167,139,250,0.15); color: #a78bfa; padding: 4px 14px; border-radius: 20px; font-weight: 600; font-size: 0.9em;">Claude Sonnet</div>
+                            <span style="color: var(--color-text-muted); font-size: 0.85em;">&#9660;</span>
+                        </div>
+                        <!-- Conversation -->
+                        <div style="flex: 1; padding: 16px; overflow: hidden; display: flex; flex-direction: column; gap: 12px;">
+                            <!-- User message -->
+                            <div style="align-self: flex-end; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2); padding: 10px 14px; border-radius: 12px 12px 4px 12px; max-width: 75%; text-align: left; color: var(--color-text);">
+                                Compara PostgreSQL vs MongoDB para analytics en tiempo real con 10M eventos/día
+                            </div>
+                            <!-- Claude response -->
+                            <div style="align-self: flex-start; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); padding: 10px 14px; border-radius: 4px 12px 12px 12px; max-width: 80%; text-align: left; color: var(--color-text-muted); line-height: 1.5;">
+                                <span style="color: var(--color-accent); font-weight: 600;">Claude:</span> Excelente pregunta. Analicemos ambas opciones considerando tu volumen de 10M eventos/día...<br><br>
+                                <strong style="color: var(--color-text);">PostgreSQL</strong> con extensiones como TimescaleDB ofrece...<br>
+                                <strong style="color: var(--color-text);">MongoDB</strong> con su pipeline de agregación...
+                            </div>
+                        </div>
+                        <!-- Input bar -->
+                        <div style="padding: 10px 16px; border-top: 1px solid rgba(255,255,255,0.06);">
+                            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 14px; color: var(--color-text-muted); display: flex; justify-content: space-between; align-items: center;">
+                                <span>Escribe tu mensaje...</span>
+                                <span style="background: var(--color-accent); color: #000; width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold;">&#8593;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size: 0.55em; margin-top: 1em; display: flex; justify-content: center; gap: 40px;">
+                    <span class="fragment"><strong>1.</strong> Panel de conversación</span>
+                    <span class="fragment"><strong>2.</strong> Selector de modelo</span>
+                    <span class="fragment"><strong>3.</strong> Área de input</span>
+                    <span class="fragment"><strong>4.</strong> Historial lateral</span>
+                </div>
+            </div>
+            <!-- Abrir claude.ai y hacer un tour en vivo. Señalar cada elemento de la interfaz. -->
+        </div>
+
+        <!-- SLIDE 6: MODELS -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m1);">1.1 &mdash; Los Modelos</h3>
+                <h2>Haiku vs Sonnet vs Opus</h2>
+                <table style="margin-top: 0.8em;">
+                    <thead>
+                        <tr>
+                            <th>Modelo</th>
+                            <th>Velocidad</th>
+                            <th>Inteligencia</th>
+                            <th>Mejor para</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment">
+                            <td><strong style="color: #60a5fa;">Haiku</strong></td>
+                            <td>Ultra rápido</td>
+                            <td>Buena</td>
+                            <td>Tareas simples, clasificación, chat rápido</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td><strong style="color: #a78bfa;">Sonnet</strong></td>
+                            <td>Rápido</td>
+                            <td>Muy alta</td>
+                            <td>Uso diario, código, análisis, escritura</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td><strong style="color: #f59e0b;">Opus</strong></td>
+                            <td>Moderado</td>
+                            <td>Máxima</td>
+                            <td>Razonamiento complejo, investigación profunda</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="fragment" style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 1em;">
+                    Regla general: empieza con <strong>Sonnet</strong> para el 80% de las tareas. Escala a Opus solo cuando necesites razonamiento profundo.
+                </p>
+            </div>
+            <!-- Analogía: Haiku es un mensajero en bicicleta (rápido, eficiente). Sonnet es un profesional senior. Opus es un consultor experto (toma más tiempo pero da la mejor respuesta). -->
+        </div>
+
+        <!-- SLIDE 7: 1.2 PROMPTING - CRAFT -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m1);">1.2 &mdash; El Arte del Prompting</h3>
+                <h2>Framework <span style="color: var(--color-m1);">CRAFT</span></h2>
+                <div class="framework-box" style="margin-top: 0.8em;">
+                    <div class="framework-item fragment">
+                        <span class="framework-letter" style="color: var(--color-m1);">C</span>
+                        <span><strong>Contexto</strong> &mdash; ¿Quién eres? ¿Cuál es la situación?</span>
+                    </div>
+                    <div class="framework-item fragment">
+                        <span class="framework-letter" style="color: var(--color-m1);">R</span>
+                        <span><strong>Rol</strong> &mdash; ¿Qué papel debe asumir Claude?</span>
+                    </div>
+                    <div class="framework-item fragment">
+                        <span class="framework-letter" style="color: var(--color-m1);">A</span>
+                        <span><strong>Acción</strong> &mdash; ¿Qué debe hacer exactamente?</span>
+                    </div>
+                    <div class="framework-item fragment">
+                        <span class="framework-letter" style="color: var(--color-m1);">F</span>
+                        <span><strong>Formato</strong> &mdash; ¿Cómo debe estructurar la respuesta?</span>
+                    </div>
+                    <div class="framework-item fragment">
+                        <span class="framework-letter" style="color: var(--color-m1);">T</span>
+                        <span><strong>Tono</strong> &mdash; ¿Qué voz o estilo debe usar?</span>
+                    </div>
+                </div>
+            </div>
+            <!-- CRAFT es un framework fácil de recordar. No siempre necesitas los 5 elementos, pero mientras más des, mejor será la respuesta. -->
+        </div>
+
+        <!-- SLIDE 8: PROMPT COMPARISON -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m1);">1.2 &mdash; CRAFT en Acción</h3>
+                <h2>Antes y después</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div>
+                        <div class="prompt-label" style="color: #ef4444;">Antes</div>
+                        <div class="prompt-box bad">
+                            "Escríbeme algo sobre bases de datos"
+                        </div>
+                    </div>
+                    <div>
+                        <div class="prompt-label" style="color: #10b981;">Después (CRAFT)</div>
+                        <div class="prompt-box good">
+                            "<strong>[C]</strong> Soy CTO de una startup con 10M eventos/día.<br>
+                            <strong>[R]</strong> Actúa como arquitecto senior de datos.<br>
+                            <strong>[A]</strong> Compara PostgreSQL vs MongoDB para analytics en tiempo real.<br>
+                            <strong>[F]</strong> Tabla comparativa + párrafo de recomendación.<br>
+                            <strong>[T]</strong> Directo y técnico."
+                        </div>
+                    </div>
+                </div>
+                <p class="fragment" style="font-size: 0.55em; color: var(--color-text-muted); margin-top: 1em; text-align: center;">
+                    La diferencia no es solo mejor output &mdash; es output <em>útil y accionable</em>.
+                </p>
+            </div>
+            <!-- Demo en vivo: escribir ambos prompts en Claude y comparar las respuestas lado a lado. La diferencia es dramática. -->
+        </div>
+
+        <!-- SLIDE 9: 1.3 CONVERSATION DYNAMICS -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m1);">1.3 &mdash; Dinámica de Conversación</h3>
+                <h2>Claude recuerda todo el hilo</h2>
+                <ul style="font-size: 0.7em;">
+                    <li class="fragment"><strong>Multi-turn context:</strong> cada mensaje ve toda la conversación anterior</li>
+                    <li class="fragment"><strong>Correcciones:</strong> "No, me refiero a..." / "Ajusta el tono a..."</li>
+                    <li class="fragment"><strong>Refinamiento iterativo:</strong> pide cambios incrementales, no reescribas todo</li>
+                    <li class="fragment"><strong>Context window:</strong> ~200K tokens (~150K palabras). Si la conversación es muy larga, abre una nueva</li>
+                </ul>
+                <div class="fragment" style="margin-top: 1em; padding: 16px; background: rgba(16,185,129,0.1); border-radius: 10px; border-left: 4px solid var(--color-m1);">
+                    <p style="font-size: 0.55em; margin: 0;"><strong>Pro tip:</strong> Usa "Haz lo mismo pero para..." para reutilizar el formato de una respuesta anterior con diferente contenido.</p>
+                </div>
+            </div>
+            <!-- Mostrar cómo una conversación de 3-4 turnos construye sobre sí misma. Demostrar una corrección mid-stream. -->
+        </div>
+
+        <!-- SLIDE 10: 1.3b EXTENDED THINKING -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m1);">1.3 &mdash; Extended Thinking</h3>
+                <h2>Cuando necesitas que Claude <em>piense</em> de verdad</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div class="card">
+                        <h4>Sin Extended Thinking</h4>
+                        <p>Claude responde inmediatamente con su "primera intuición". Ideal para tareas directas y rápidas.</p>
+                    </div>
+                    <div class="card" style="border-color: var(--color-m1);">
+                        <h4 style="color: var(--color-m1);">Con Extended Thinking</h4>
+                        <p>Claude razona paso a paso internamente antes de responder. Visible como un bloque desplegable. Mejor para problemas complejos, matemáticas, lógica y análisis.</p>
+                    </div>
+                </div>
+                <p class="fragment" style="font-size: 0.55em; color: var(--color-text-muted); text-align: center; margin-top: 1em;">
+                    Se activa en el selector de modelo o Claude lo usa automáticamente cuando lo necesita.
+                </p>
+            </div>
+            <!-- Mostrar un ejemplo donde extended thinking marca la diferencia: un puzzle lógico o un problema de código complejo. -->
+        </div>
+
+        <!-- SLIDE 11: 1.4 EXERCISE -->
+        <div class="slide exercise-slide">
+            <div class="slide-content">
+                <div class="exercise-badge">Ejercicio Práctico</div>
+                <h2>El Makeover de Prompts</h2>
+                <p style="font-size: 0.65em; color: var(--color-text-muted); margin-bottom: 1em;">Transforma estos prompts usando CRAFT:</p>
+                <div style="text-align: left; font-size: 0.6em;">
+                    <div class="prompt-box bad" style="margin-bottom: 12px;">
+                        <strong>1.</strong> "Ayúdame con mi presentación"
+                    </div>
+                    <div class="prompt-box bad" style="margin-bottom: 12px;">
+                        <strong>2.</strong> "Escribe un email profesional"
+                    </div>
+                    <div class="prompt-box bad">
+                        <strong>3.</strong> "Explícame machine learning"
+                    </div>
+                </div>
+                <div class="timer">5 minutos &bull; Abre claude.ai y prueba tus versiones mejoradas</div>
+            </div>
+            <!-- 5 minutos. Los asistentes reescriben los 3 prompts usando CRAFT en sus propias sesiones de Claude. Al terminar, pedir 2-3 voluntarios que compartan su mejor prompt. -->
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 12: TRANSITION 1 → 2                                  -->
+        <!-- ============================================================ -->
+        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, var(--color-bg) 50%, rgba(59,130,246,0.1) 100%);">
+            <div class="slide-content">
+                <blockquote>
+                    Ahora que puedes tener grandes conversaciones con Claude... ¿qué tal si Claude te <em>mostrara</em> su trabajo en vez de solo describirlo?
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 13: MODULE 2 TITLE                                    -->
+        <!-- ============================================================ -->
+        <div class="slide module-title" style="background: linear-gradient(135deg, var(--color-bg) 60%, rgba(59,130,246,0.15) 100%);">
+            <div class="slide-content">
+                <div class="module-number" style="color: var(--color-m2);">Módulo 02</div>
+                <h2>Artefactos: Claude como<br>Taller Creativo</h2>
+                <p class="module-subtitle">Genera, previsualiza e itera sobre código, documentos y visualizaciones</p>
+                <div class="module-time">20 minutos</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: 2.1 WHAT ARE ARTIFACTS -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m2);">2.1 &mdash; ¿Qué son los Artifacts?</h3>
+                <h2>Un panel donde Claude <em>crea</em></h2>
+                <!-- CSS Mockup: Artifact panel split view -->
+                <div style="max-width: 85%; margin: 16px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); display: flex; height: 250px; font-size: 0.38em; background: #1a1a2e;">
+                    <!-- Left: Chat -->
+                    <div style="width: 42%; border-right: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column;">
+                        <div style="padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--color-text-muted); font-weight: 600;">Conversación</div>
+                        <div style="flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 10px; overflow: hidden;">
+                            <div style="align-self: flex-end; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2); padding: 8px 12px; border-radius: 10px 10px 4px 10px; max-width: 85%; text-align: left; color: var(--color-text);">
+                                Crea un dashboard de ventas con KPIs, gráfico de barras por mes y gráfico de torta. Tema oscuro.
+                            </div>
+                            <div style="align-self: flex-start; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); padding: 8px 12px; border-radius: 4px 10px 10px 10px; max-width: 85%; text-align: left; color: var(--color-text-muted); line-height: 1.4;">
+                                <span style="color: var(--color-accent); font-weight: 600;">Claude:</span> He creado el dashboard con los componentes solicitados. Puedes verlo en el panel de artefactos &rarr;
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right: Artifact panel -->
+                    <div style="flex: 1; display: flex; flex-direction: column; background: #13131f;">
+                        <div style="padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px;">
+                            <span style="color: var(--color-m2); font-weight: 600;">&#9998; Artifact</span>
+                            <span style="color: var(--color-text-muted); font-size: 0.9em;">Dashboard de Ventas</span>
+                        </div>
+                        <!-- Mini dashboard mockup -->
+                        <div style="flex: 1; padding: 12px; overflow: hidden;">
+                            <!-- KPIs row -->
+                            <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+                                <div style="flex: 1; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
+                                    <div style="color: var(--color-text-muted); font-size: 0.85em;">Ingresos</div>
+                                    <div style="color: #10b981; font-size: 1.4em; font-weight: 700;">$2.4M</div>
+                                </div>
+                                <div style="flex: 1; background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
+                                    <div style="color: var(--color-text-muted); font-size: 0.85em;">Clientes</div>
+                                    <div style="color: #3b82f6; font-size: 1.4em; font-weight: 700;">1,847</div>
+                                </div>
+                                <div style="flex: 1; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
+                                    <div style="color: var(--color-text-muted); font-size: 0.85em;">Crecimiento</div>
+                                    <div style="color: #f59e0b; font-size: 1.4em; font-weight: 700;">+23%</div>
+                                </div>
+                            </div>
+                            <!-- Charts row -->
+                            <div style="display: flex; gap: 8px;">
+                                <!-- Bar chart -->
+                                <div style="flex: 1.2; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px;">
+                                    <div style="color: var(--color-text-muted); font-size: 0.85em; margin-bottom: 6px;">Ventas por Mes</div>
+                                    <div style="display: flex; align-items: flex-end; gap: 4px; height: 70px;">
+                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 45%;"></div>
+                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 60%;"></div>
+                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 40%;"></div>
+                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 75%;"></div>
+                                        <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); border-radius: 3px 3px 0 0; height: 55%;"></div>
+                                        <div style="flex: 1; background: linear-gradient(to top, #10b981, #34d399); border-radius: 3px 3px 0 0; height: 90%;"></div>
+                                    </div>
+                                    <div style="display: flex; gap: 4px; margin-top: 4px;">
+                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Ene</div>
+                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Feb</div>
+                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Mar</div>
+                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Abr</div>
+                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">May</div>
+                                        <div style="flex: 1; text-align: center; color: var(--color-text-muted); font-size: 0.75em;">Jun</div>
+                                    </div>
+                                </div>
+                                <!-- Pie chart approximation -->
+                                <div style="flex: 0.8; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; align-items: center;">
+                                    <div style="color: var(--color-text-muted); font-size: 0.85em; margin-bottom: 6px; align-self: flex-start;">Categorías</div>
+                                    <div style="width: 64px; height: 64px; border-radius: 50%; background: conic-gradient(#3b82f6 0% 40%, #10b981 40% 65%, #f59e0b 65% 85%, #8b5cf6 85% 100%); margin: 4px 0;"></div>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; justify-content: center;">
+                                        <span style="color: #3b82f6; font-size: 0.8em;">&#9679; SaaS</span>
+                                        <span style="color: #10b981; font-size: 0.8em;">&#9679; Retail</span>
+                                        <span style="color: #f59e0b; font-size: 0.8em;">&#9679; Serv.</span>
+                                        <span style="color: #8b5cf6; font-size: 0.8em;">&#9679; Otro</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 0.6em; color: var(--color-text-muted);">
+                    En vez de solo <em>describir</em> el código, Claude lo <strong>renderiza en vivo</strong> al lado de la conversación.
+                </p>
+            </div>
+            <!-- Los artefactos transforman a Claude de un chatbot a un taller creativo. Mostrar cómo aparece el panel lateral automáticamente. -->
+        </div>
+
+        <!-- SLIDE 15: ARTIFACT TYPES -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m2);">2.1 &mdash; Tipos de Artifacts</h3>
+                <h2>¿Qué puede crear Claude?</h2>
+                <div class="grid-3" style="margin-top: 0.8em;">
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m2);">Aplicaciones Web</h4>
+                        <p>HTML, CSS, JavaScript, React components interactivos</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m2);">Visualizaciones</h4>
+                        <p>Gráficos SVG, charts interactivos, infografías, data viz</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m2);">Diagramas</h4>
+                        <p>Mermaid flowcharts, sequence diagrams, ER diagrams</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m2);">Documentos</h4>
+                        <p>Markdown con formato, reportes estructurados, guías</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m2);">Código</h4>
+                        <p>Python, JavaScript, SQL, cualquier lenguaje con syntax highlighting</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m2);">Herramientas</h4>
+                        <p>Calculadoras, convertidores, mini-apps funcionales</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Listar los tipos rápidamente. El punto clave: no necesitas saber programar para obtener aplicaciones funcionales. -->
+        </div>
+
+        <!-- SLIDE 16: 2.2 DEMO: DASHBOARD -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m2);">2.2 &mdash; Demo en Vivo</h3>
+                <h2>Creando un Dashboard Interactivo</h2>
+                <div style="text-align: left; font-size: 0.6em; margin-top: 1em;">
+                    <p style="color: var(--color-text-muted); margin-bottom: 0.8em;">Prompt de inicio:</p>
+                    <div class="prompt-box good">
+                        "Crea un dashboard interactivo de ventas con datos de ejemplo. Incluye un gráfico de barras por mes, un gráfico de torta por categoría, KPIs en la parte superior y un filtro de rango de fechas. Usa un diseño moderno con tema oscuro."
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 1.2em;">
+                    <p style="font-size: 0.55em; color: var(--color-text-muted);">Iteraciones que haremos en vivo:</p>
+                    <div style="font-size: 0.5em; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <span style="background: rgba(59,130,246,0.15); padding: 6px 14px; border-radius: 8px;">"Agrega dark mode toggle"</span>
+                        <span style="background: rgba(59,130,246,0.15); padding: 6px 14px; border-radius: 8px;">"Cambia a gráficos de línea"</span>
+                        <span style="background: rgba(59,130,246,0.15); padding: 6px 14px; border-radius: 8px;">"Agrega animaciones"</span>
+                    </div>
+                </div>
+            </div>
+            <!-- DEMO EN VIVO: Abrir Claude, escribir el prompt, esperar el artefacto. Luego iterar con 2-3 cambios. Mostrar que Claude modifica el artefacto existente, no crea uno nuevo cada vez. -->
+        </div>
+
+        <!-- SLIDE 17: ITERATION LOOP -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m2);">2.2 &mdash; El Loop de Iteración</h3>
+                <h2>Crear &rarr; Revisar &rarr; Refinar</h2>
+                <div style="margin: 1.5em auto; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <div class="arch-box fragment" style="background: rgba(59,130,246,0.2); border: 2px solid var(--color-m2);">
+                        Prompt<br>inicial
+                    </div>
+                    <span class="arch-arrow fragment">&rarr;</span>
+                    <div class="arch-box fragment" style="background: rgba(59,130,246,0.15); border: 2px solid var(--color-m2);">
+                        Artefacto<br>v1
+                    </div>
+                    <span class="arch-arrow fragment">&rarr;</span>
+                    <div class="arch-box fragment" style="background: rgba(59,130,246,0.15); border: 2px solid var(--color-m2);">
+                        "Ajusta<br>esto..."
+                    </div>
+                    <span class="arch-arrow fragment">&rarr;</span>
+                    <div class="arch-box fragment" style="background: rgba(59,130,246,0.3); border: 2px solid var(--color-m2);">
+                        Artefacto<br>v2, v3...
+                    </div>
+                </div>
+                <ul style="font-size: 0.6em;" class="fragment">
+                    <li>Claude <strong>modifica</strong> el artefacto existente (no crea uno nuevo)</li>
+                    <li>El estado se mantiene entre turnos</li>
+                    <li>Puedes pedir cambios específicos o decir "mejóralo"</li>
+                </ul>
+            </div>
+            <!-- Concepto clave: iterar es más efectivo que intentar un prompt perfecto. Empieza simple, refina. -->
+        </div>
+
+        <!-- SLIDE 18: 2.3 ADVANCED TECHNIQUES -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m2);">2.3 &mdash; Técnicas Avanzadas</h3>
+                <h2>Más allá del dashboard</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m2);">Diagramas Mermaid</h4>
+                        <p>"Dibuja un diagrama de flujo del proceso de onboarding de nuestra empresa"</p>
+                        <pre style="margin-top: 8px;"><code class="language-text">graph TD
+    A[Nuevo empleado] --> B[RRHH]
+    B --> C{¿Tiene equipo?}
+    C -->|Sí| D[Setup]
+    C -->|No| E[Solicitar]</code></pre>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m2);">Publicar y Compartir</h4>
+                        <p>Click en <strong>"Publish"</strong> para obtener un link público. Cualquier persona puede ver el artefacto sin cuenta de Claude. Otros pueden hacer <strong>remix</strong> (fork) de tu creación.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Mostrar ejemplo de Mermaid: pedir un diagrama y ver cómo Claude lo renderiza. Mostrar el botón de Publish. -->
+        </div>
+
+        <!-- SLIDE 19: 2.4 EXERCISE -->
+        <div class="slide exercise-slide">
+            <div class="slide-content">
+                <div class="exercise-badge">Ejercicio Práctico</div>
+                <h2>Artifact Relay</h2>
+                <div style="text-align: left; font-size: 0.6em;">
+                    <ol>
+                        <li class="fragment">Pídele a Claude que cree un <strong>landing page personal</strong> como artefacto</li>
+                        <li class="fragment">Itera: <em>"Agrega una animación al header"</em></li>
+                        <li class="fragment">Itera: <em>"Cambia la paleta de colores a tonos de azul"</em></li>
+                        <li class="fragment">Itera: <em>"Agrega una sección de contacto con un formulario"</em></li>
+                    </ol>
+                </div>
+                <div class="fragment" style="margin-top: 1em; padding: 12px; background: rgba(59,130,246,0.1); border-radius: 10px;">
+                    <p style="font-size: 0.5em; margin: 0; color: var(--color-m2);">
+                        <strong>Bonus:</strong> Crea un diagrama Mermaid del flujo de trabajo de tu equipo
+                    </p>
+                </div>
+                <div class="timer">5 minutos &bull; Experimenta con el loop de iteración</div>
+            </div>
+            <!-- 5 minutos. El objetivo es que sientan el poder del loop de iteración. No importa si el resultado es perfecto, importa que entiendan el flujo. -->
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 20: TRANSITION 2 → 3                                  -->
+        <!-- ============================================================ -->
+        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, var(--color-bg) 50%, rgba(139,92,246,0.1) 100%);">
+            <div class="slide-content">
+                <blockquote>
+                    Los artefactos son poderosos para creaciones puntuales. Pero... ¿qué pasa si necesitas que Claude entienda <em>tu dominio, tu estilo, tu contexto</em> de forma consistente?
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 21: MODULE 3 TITLE                                    -->
+        <!-- ============================================================ -->
+        <div class="slide module-title" style="background: linear-gradient(135deg, var(--color-bg) 60%, rgba(139,92,246,0.15) 100%);">
+            <div class="slide-content">
+                <div class="module-number" style="color: var(--color-m3);">Módulo 03</div>
+                <h2>Projects: Inteligencia<br>Organizada</h2>
+                <p class="module-subtitle">Instrucciones persistentes, knowledge base y consistencia</p>
+                <div class="module-time">15 minutos</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 22: 3.1 THE PROBLEM -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m3);">3.1 &mdash; El Problema</h3>
+                <h2>Sin Projects vs. Con Projects</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div class="card" style="border-color: #ef4444;">
+                        <h4 style="color: #ef4444;">Sin Projects</h4>
+                        <p>
+                            Repetir contexto en cada conversación<br>
+                            Respuestas inconsistentes<br>
+                            No hay conocimiento compartido<br>
+                            Cada chat empieza de cero
+                        </p>
+                    </div>
+                    <div class="card" style="border-color: var(--color-m3);">
+                        <h4 style="color: var(--color-m3);">Con Projects</h4>
+                        <p>
+                            Instrucciones persistentes automáticas<br>
+                            Tono y formato consistentes<br>
+                            Documentos de referencia siempre disponibles<br>
+                            Claude "conoce" tu dominio
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Analogía: sin proyecto es como hablar con un asistente que tiene amnesia cada día. Con proyecto, el asistente tiene un manual de referencia permanente. -->
+        </div>
+
+        <!-- SLIDE 23: 3.2 ANATOMY -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m3);">3.2 &mdash; Anatomía de un Project</h3>
+                <h2>Los tres componentes</h2>
+                <div style="margin-top: 1em;">
+                    <div class="card fragment" style="margin-bottom: 16px; border-left: 4px solid var(--color-m3);">
+                        <h4 style="color: var(--color-m3);">1. Project Instructions (System Prompt)</h4>
+                        <p>Instrucciones que Claude sigue en <strong>cada</strong> conversación del proyecto. Define tono, formato, reglas, restricciones.</p>
+                    </div>
+                    <div class="card fragment" style="margin-bottom: 16px; border-left: 4px solid var(--color-m3);">
+                        <h4 style="color: var(--color-m3);">2. Knowledge Base</h4>
+                        <p>Sube PDFs, código, docs, guías de estilo. Claude los consulta automáticamente cuando son relevantes.</p>
+                    </div>
+                    <div class="card fragment" style="border-left: 4px solid var(--color-m3);">
+                        <h4 style="color: var(--color-m3);">3. Conversaciones</h4>
+                        <p>Cada chat dentro del proyecto hereda las instrucciones y tiene acceso a la knowledge base.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- DEMO: Crear un proyecto en vivo. Escribir instrucciones simples, subir un documento, iniciar una conversación y mostrar cómo Claude refleja las instrucciones. -->
+        </div>
+
+        <!-- SLIDE 24: 3.3 PATTERNS -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m3);">3.3 &mdash; Patrones para Equipos</h3>
+                <h2>Ideas de Projects que transforman el trabajo</h2>
+                <div class="grid-3" style="margin-top: 0.8em;">
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m3);">Brand Voice</h4>
+                        <p>Sube tu guía de marca. Cada texto generado sigue el tono exacto de tu empresa.</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m3);">Code Review</h4>
+                        <p>Sube tu coding standard. Claude revisa PRs siguiendo tus reglas exactas.</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m3);">Onboarding</h4>
+                        <p>Sube el wiki interno. Nuevos empleados preguntan a Claude en vez de interrumpir al equipo.</p>
+                    </div>
+                </div>
+                <p class="fragment" style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 1em; text-align: center;">
+                    En planes <strong>Team</strong> y <strong>Enterprise</strong>, los projects se comparten entre miembros del equipo.
+                </p>
+            </div>
+            <!-- Estos patrones son los más comunes en empresas. Preguntar a la audiencia: ¿cuáles les parecen más útiles para su trabajo? -->
+        </div>
+
+        <!-- SLIDE 25: 3.4 EXERCISE -->
+        <div class="slide exercise-slide">
+            <div class="slide-content">
+                <div class="exercise-badge">Ejercicio Práctico</div>
+                <h2>Tu Primer Project</h2>
+                <div style="text-align: left; font-size: 0.6em;">
+                    <ol>
+                        <li class="fragment">Ve a <strong>claude.ai</strong> &rarr; <strong>Projects</strong> &rarr; <strong>Create Project</strong></li>
+                        <li class="fragment">Escribe instrucciones custom, por ejemplo:<br>
+                            <div class="prompt-box good" style="margin: 8px 0; font-size: 0.9em;">
+                                "Siempre responde en español. Usa un tono profesional pero accesible. Cuando des ejemplos de código, usa Python con type hints. Formatea las respuestas largas con headers y bullet points."
+                            </div>
+                        </li>
+                        <li class="fragment">Sube al menos un documento (un PDF, un .txt, cualquier referencia)</li>
+                        <li class="fragment">Inicia una conversación y verifica que Claude sigue las instrucciones</li>
+                    </ol>
+                </div>
+                <div class="timer">5 minutos &bull; Crea y prueba tu proyecto</div>
+            </div>
+            <!-- 5 minutos. Ayudar a quienes tengan problemas creando el proyecto. Al final, preguntar: ¿notaron la diferencia con vs. sin instrucciones? -->
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 26: BREAK                                             -->
+        <!-- ============================================================ -->
+        <div class="slide break-slide" style="background: var(--color-bg);">
+            <div class="slide-content">
+                <div class="coffee">&#9749;</div>
+                <h2>Descanso</h2>
+                <p style="font-size: 0.6em; color: var(--color-text-muted);">5 minutos &bull; Estira las piernas, recarga café</p>
+                <div style="margin-top: 2em; padding: 20px; background: var(--color-surface); border-radius: 12px; display: inline-block;">
+                    <p style="font-size: 0.5em; margin: 0; color: var(--color-text-muted);">
+                        Cuando volvamos, Claude sale del browser<br>y se une a tu escritorio y tu terminal.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 27: TRANSITION 3 → 4                                  -->
+        <!-- ============================================================ -->
+        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(139,92,246,0.1) 0%, var(--color-bg) 50%, rgba(245,158,11,0.1) 100%);">
+            <div class="slide-content">
+                <blockquote>
+                    Projects le dan a Claude memoria y contexto. Pero... ¿qué si Claude pudiera <em>hacer cosas</em> en tu computadora? Navegar archivos, editar documentos, ejecutar tareas...
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 28: MODULE 4 TITLE                                    -->
+        <!-- ============================================================ -->
+        <div class="slide module-title" style="background: linear-gradient(135deg, var(--color-bg) 60%, rgba(245,158,11,0.15) 100%);">
+            <div class="slide-content">
+                <div class="module-number" style="color: var(--color-m4);">Módulo 04</div>
+                <h2>Cowork: Claude como<br>Colega de Escritorio</h2>
+                <p class="module-subtitle">Claude planifica, ejecuta y reporta tareas multi-paso</p>
+                <div class="module-time">20 minutos</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 29: 4.1 WHAT IS COWORK -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m4);">4.1 &mdash; ¿Qué es Cowork?</h3>
+                <h2>Los tres modos de Claude</h2>
+                <table style="margin-top: 0.8em;">
+                    <thead>
+                        <tr>
+                            <th>Modo</th>
+                            <th>Dónde vive</th>
+                            <th>Qué hace</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment">
+                            <td><strong style="color: var(--color-m1);">Chat</strong></td>
+                            <td>Browser (claude.ai)</td>
+                            <td>Conversa, genera texto, crea artefactos</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td><strong style="color: var(--color-m4);">Cowork</strong></td>
+                            <td>Tu escritorio</td>
+                            <td>Lee/edita archivos, organiza, ejecuta tareas</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td><strong style="color: var(--color-m5);">Code</strong></td>
+                            <td>Tu terminal</td>
+                            <td>Lee/escribe código, ejecuta comandos, MCPs</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="fragment" style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 1em;">
+                    Disponible en macOS y Windows &bull; Requiere plan Pro, Max, Team o Enterprise
+                </p>
+            </div>
+            <!-- Explicar la diferencia clave: Chat es conversación, Cowork es acción en el escritorio, Code es acción en el terminal/codebase. -->
+        </div>
+
+        <!-- SLIDE 30: 4.2 HOW IT OPERATES -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m4);">4.2 &mdash; Cómo Opera Cowork</h3>
+                <h2>Define &rarr; Planifica &rarr; Ejecuta &rarr; Reporta</h2>
+                <div style="margin: 1.5em auto; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                    <div class="arch-box fragment" style="background: rgba(245,158,11,0.2); border: 2px solid var(--color-m4); font-size: 0.55em;">
+                        Tú defines<br>el objetivo
+                    </div>
+                    <span class="arch-arrow fragment">&rarr;</span>
+                    <div class="arch-box fragment" style="background: rgba(245,158,11,0.15); border: 2px solid var(--color-m4); font-size: 0.55em;">
+                        Claude<br>planifica
+                    </div>
+                    <span class="arch-arrow fragment">&rarr;</span>
+                    <div class="arch-box fragment" style="background: rgba(245,158,11,0.15); border: 2px solid var(--color-m4); font-size: 0.55em;">
+                        Tú apruebas<br>las acciones
+                    </div>
+                    <span class="arch-arrow fragment">&rarr;</span>
+                    <div class="arch-box fragment" style="background: rgba(245,158,11,0.3); border: 2px solid var(--color-m4); font-size: 0.55em;">
+                        Claude<br>ejecuta
+                    </div>
+                </div>
+                <ul style="font-size: 0.6em;" class="fragment">
+                    <li><strong>Lee y edita</strong> archivos en tu sistema</li>
+                    <li><strong>Organiza</strong> carpetas y documentos</li>
+                    <li><strong>Interactúa</strong> con aplicaciones de escritorio</li>
+                    <li><strong>Muestra en tiempo real</strong> lo que está haciendo (con screenshots)</li>
+                </ul>
+            </div>
+            <!-- Enfatizar el modelo de aprobación: Claude nunca hace nada sin tu permiso. Tú siempre tienes el control. -->
+        </div>
+
+        <!-- SLIDE 31: COWORK USE CASES -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m4);">4.2 &mdash; Casos de Uso</h3>
+                <h2>¿Para qué sirve Cowork?</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m4);">Procesamiento de Documentos</h4>
+                        <p>"Toma estas 5 transcripciones de reuniones, resúmelas y crea un reporte consolidado con action items"</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m4);">Organización de Archivos</h4>
+                        <p>"Organiza mi carpeta de Descargas: clasifica por tipo, renombra con formato consistente, elimina duplicados"</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m4);">Investigación</h4>
+                        <p>"Lee estos 3 PDFs de investigación y crea una tabla comparativa de sus metodologías y hallazgos"</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: var(--color-m4);">Preparación de Datos</h4>
+                        <p>"Toma este CSV, limpia los datos, normaliza las fechas y genera un resumen ejecutivo"</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Preguntar a la audiencia: ¿cuál de estas tareas han hecho esta semana manualmente? Ese es el punto de entrada ideal para Cowork. -->
+        </div>
+
+        <!-- SLIDE 32: 4.3 DEMO -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m4);">4.3 &mdash; Demo</h3>
+                <h2>Procesando documentos con Cowork</h2>
+                <!-- CSS Mockup: Cowork interface -->
+                <div style="max-width: 85%; margin: 16px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); background: #1a1a2e; font-size: 0.38em; padding: 16px;">
+                    <!-- Header -->
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+                        <div style="background: rgba(245,158,11,0.2); color: var(--color-m4); padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.9em;">&#9881; Cowork</div>
+                        <span style="color: var(--color-text-muted); font-size: 0.9em;">Procesando transcripciones de reuniones</span>
+                    </div>
+                    <div style="display: flex; gap: 14px;">
+                        <!-- Left: Task plan -->
+                        <div style="flex: 1;">
+                            <div style="color: var(--color-text); font-weight: 600; margin-bottom: 8px;">Plan de ejecución</div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.15); border-radius: 6px;">
+                                    <span style="color: #10b981; font-size: 1.1em;">&#10003;</span>
+                                    <span style="color: var(--color-text-muted); text-decoration: line-through;">Leer archivos de transcripción</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.15); border-radius: 6px;">
+                                    <span style="color: #10b981; font-size: 1.1em;">&#10003;</span>
+                                    <span style="color: var(--color-text-muted); text-decoration: line-through;">Generar resumen por reunión</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); border-radius: 6px;">
+                                    <span style="color: #f59e0b; font-size: 1.1em;">&#9679;</span>
+                                    <span style="color: var(--color-text); font-weight: 500;">Extraer action items</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px;">
+                                    <span style="color: var(--color-text-muted);">&#9675;</span>
+                                    <span style="color: var(--color-text-muted);">Consolidar reporte final</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px;">
+                                    <span style="color: var(--color-text-muted);">&#9675;</span>
+                                    <span style="color: var(--color-text-muted);">Presentar para revisión</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Right: File cards + progress -->
+                        <div style="flex: 1;">
+                            <div style="color: var(--color-text); font-weight: 600; margin-bottom: 8px;">Archivos procesados</div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
+                                    <span style="font-size: 1.2em;">&#128196;</span>
+                                    <div style="flex: 1;">
+                                        <div style="color: var(--color-text); font-weight: 500;">meeting_01.txt</div>
+                                        <div style="color: var(--color-text-muted); font-size: 0.85em;">Sprint planning - 15 mar</div>
+                                    </div>
+                                    <span style="color: #10b981; font-size: 0.85em;">&#10003; Leído</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
+                                    <span style="font-size: 1.2em;">&#128196;</span>
+                                    <div style="flex: 1;">
+                                        <div style="color: var(--color-text); font-weight: 500;">meeting_02.txt</div>
+                                        <div style="color: var(--color-text-muted); font-size: 0.85em;">Revisión de producto - 16 mar</div>
+                                    </div>
+                                    <span style="color: #10b981; font-size: 0.85em;">&#10003; Leído</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;">
+                                    <span style="font-size: 1.2em;">&#128196;</span>
+                                    <div style="flex: 1;">
+                                        <div style="color: var(--color-text); font-weight: 500;">meeting_03.txt</div>
+                                        <div style="color: var(--color-text-muted); font-size: 0.85em;">Sync de diseño - 17 mar</div>
+                                    </div>
+                                    <span style="color: #f59e0b; font-size: 0.85em;">&#8230; Leyendo</span>
+                                </div>
+                            </div>
+                            <!-- Progress bar -->
+                            <div style="margin-top: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span style="color: var(--color-text-muted); font-size: 0.9em;">Progreso general</span>
+                                    <span style="color: var(--color-m4); font-weight: 600;">60%</span>
+                                </div>
+                                <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
+                                    <div style="width: 60%; height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24); border-radius: 3px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size: 0.55em; text-align: left; max-width: 80%; margin: 1em auto;">
+                    <p style="color: var(--color-m4); font-weight: 600;">Lo que Claude hace internamente:</p>
+                    <ol style="color: var(--color-text-muted);">
+                        <li class="fragment">Lee cada archivo de transcripción</li>
+                        <li class="fragment">Genera un resumen individual por reunión</li>
+                        <li class="fragment">Extrae todos los action items</li>
+                        <li class="fragment">Consolida en un documento final</li>
+                        <li class="fragment">Te muestra el resultado para revisión</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- Si hay acceso a Cowork: hacer demo en vivo. Si no: mostrar screenshots/GIFs del flujo paso a paso. Mostrar corrección mid-stream: "Agrupa los action items por equipo, no por reunión". -->
+        </div>
+
+        <!-- SLIDE 33: COWORK + PROJECTS -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m4);">4.3 &mdash; Cowork + Projects</h3>
+                <h2>Combinando poderes</h2>
+                <div style="margin: 1.5em auto; text-align: center;">
+                    <div class="arch-diagram">
+                        <div class="arch-box" style="background: rgba(139,92,246,0.2); border: 2px solid var(--color-m3); font-size: 0.55em;">
+                            Project<br><small style="color: var(--color-text-muted);">(contexto + reglas)</small>
+                        </div>
+                        <span class="arch-arrow">+</span>
+                        <div class="arch-box" style="background: rgba(245,158,11,0.2); border: 2px solid var(--color-m4); font-size: 0.55em;">
+                            Cowork<br><small style="color: var(--color-text-muted);">(acciones)</small>
+                        </div>
+                        <span class="arch-arrow">=</span>
+                        <div class="arch-box" style="background: rgba(16,185,129,0.2); border: 2px solid var(--color-m1); font-size: 0.55em;">
+                            Asistente<br>especializado
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 0.6em; color: var(--color-text-muted); text-align: center;">
+                    Usa <strong>@proyecto</strong> en Cowork para traer el contexto de un Project a la sesión.
+                </p>
+            </div>
+            <!-- Ejemplo: tienes un project con tu guía de estilo + Cowork lee tus borradores y los reescribe siguiendo la guía automáticamente. -->
+        </div>
+
+        <!-- SLIDE 34: 4.4 EXERCISE -->
+        <div class="slide exercise-slide">
+            <div class="slide-content">
+                <div class="exercise-badge">Ejercicio Práctico</div>
+                <h2>Delega una Tarea Real</h2>
+                <div style="text-align: left; font-size: 0.6em;">
+                    <ol>
+                        <li class="fragment">Piensa en una tarea <strong>tedesca y repetitiva</strong> que hiciste esta semana</li>
+                        <li class="fragment">Escribe el prompt que usarías para delegarla a Cowork:
+                            <div class="prompt-box good" style="margin: 8px 0; font-size: 0.9em;">
+                                "Tengo [X archivos] en [ubicación]. Necesito que [acción]. El formato de salida debe ser [formato]. Prioriza [criterio]."
+                            </div>
+                        </li>
+                        <li class="fragment">Comparte tu prompt con el grupo</li>
+                    </ol>
+                </div>
+                <p class="fragment" style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 1em;">
+                    Si tienes acceso a Cowork (Pro/Max): pruébalo en vivo
+                </p>
+                <div class="timer">5 minutos &bull; Diseña tu prompt de delegación</div>
+            </div>
+            <!-- 5 minutos. Think-pair-share. Recoger 2-3 ejemplos del grupo y discutir cómo Claude los manejaría. Si alguien tiene Cowork, hacer demo en vivo con su caso real. -->
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 35: TRANSITION 4 → 5                                  -->
+        <!-- ============================================================ -->
+        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, var(--color-bg) 50%, rgba(239,68,68,0.1) 100%);">
+            <div class="slide-content">
+                <blockquote>
+                    Cowork es ideal para tareas de escritorio. Pero los desarrolladores tienen una herramienta aún más directa: <em>Claude Code</em>, que vive en tu terminal y habla el idioma de tu codebase.
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 36: MODULE 5 TITLE                                    -->
+        <!-- ============================================================ -->
+        <div class="slide module-title" style="background: linear-gradient(135deg, var(--color-bg) 60%, rgba(239,68,68,0.15) 100%);">
+            <div class="slide-content">
+                <div class="module-number" style="color: var(--color-m5);">Módulo 05</div>
+                <h2>Claude Code y MCPs:<br>Automatización Full-Stack</h2>
+                <p class="module-subtitle">CLI para desarrolladores + conexión a servicios externos</p>
+                <div class="module-time">25 minutos</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 37: 5.1 WHAT IS CLAUDE CODE -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.1 &mdash; ¿Qué es Claude Code?</h3>
+                <h2>Claude en tu terminal</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div>
+                        <ul style="font-size: 0.6em;">
+                            <li class="fragment">CLI tool oficial de Anthropic</li>
+                            <li class="fragment">Lee, entiende y modifica tu codebase</li>
+                            <li class="fragment">Ejecuta comandos en tu terminal</li>
+                            <li class="fragment">Muestra diffs antes de aplicar cambios</li>
+                            <li class="fragment">Entiende dependencias entre archivos</li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        <pre><code class="language-bash"># Instalación
+npm install -g @anthropic-ai/claude-code
+
+# Uso: navega a tu proyecto y ejecuta
+cd mi-proyecto/
+claude</code></pre>
+                        <p style="font-size: 0.45em; color: var(--color-text-muted); margin-top: 0.5em;">
+                            Una vez dentro, simplemente escribe lo que necesitas en lenguaje natural.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Para la audiencia no técnica: Claude Code es como tener un programador experto sentado a tu lado, pero en la terminal. Para los devs: es un agente autónomo que entiende tu repo completo. -->
+        </div>
+
+        <!-- SLIDE 38: 5.2 CLAUDE CODE IN PRACTICE -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.2 &mdash; Claude Code en Práctica</h3>
+                <h2>Ejemplos reales</h2>
+                <div style="text-align: left; font-size: 0.55em;">
+                    <div class="card fragment" style="margin-bottom: 12px; border-left: 4px solid var(--color-m5);">
+                        <h4 style="color: var(--color-m5); margin-bottom: 4px;">Explorar</h4>
+                        <code style="color: var(--color-text-muted);">&gt; "Explica la arquitectura de este proyecto"</code>
+                        <p style="margin-top: 4px;">Claude lee los archivos clave y genera un resumen de la estructura, dependencias y flujos principales.</p>
+                    </div>
+                    <div class="card fragment" style="margin-bottom: 12px; border-left: 4px solid var(--color-m5);">
+                        <h4 style="color: var(--color-m5); margin-bottom: 4px;">Modificar</h4>
+                        <code style="color: var(--color-text-muted);">&gt; "Agrega validación de input al endpoint de registro"</code>
+                        <p style="margin-top: 4px;">Claude encuentra el archivo correcto, propone los cambios como diff, y espera tu aprobación antes de aplicar.</p>
+                    </div>
+                    <div class="card fragment" style="border-left: 4px solid var(--color-m5);">
+                        <h4 style="color: var(--color-m5); margin-bottom: 4px;">Crear</h4>
+                        <code style="color: var(--color-text-muted);">&gt; "Crea tests unitarios para el módulo de autenticación"</code>
+                        <p style="margin-top: 4px;">Claude analiza el código existente, genera tests con los frameworks del proyecto y los ejecuta.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- DEMO/SCREENSHOTS: Mostrar Claude Code explorando un proyecto, proponiendo un cambio con diff coloreado, y aplicándolo. Enfatizar que siempre pide permiso antes de escribir. -->
+        </div>
+
+        <!-- SLIDE 39: DIFF REVIEW -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.2 &mdash; Review de Cambios</h3>
+                <h2>Claude siempre te muestra el diff</h2>
+                <pre><code class="language-diff">  // user-registration.ts
+  export async function registerUser(data: UserInput) {
++   // Validar campos requeridos
++   if (!data.email || !isValidEmail(data.email)) {
++     throw new ValidationError('Email inválido');
++   }
++   if (!data.password || data.password.length &lt; 8) {
++     throw new ValidationError('Password debe tener mínimo 8 caracteres');
++   }
++
+    const user = await db.users.create({
+      email: data.email,
+      password: await hash(data.password),
+    });
+    return user;
+  }</code></pre>
+                <div class="fragment" style="margin-top: 0.8em; padding: 12px; background: rgba(239,68,68,0.1); border-radius: 10px;">
+                    <p style="font-size: 0.5em; margin: 0; color: var(--color-m5);">
+                        <strong>Modelo de permisos:</strong> Claude te muestra exactamente qué cambiará. Tú decides si aplicar, rechazar o pedir ajustes.
+                    </p>
+                </div>
+            </div>
+            <!-- Punto clave para audiencia no técnica: las líneas con + son lo que Claude quiere agregar. Siempre puedes decir "no" o "ajusta esto". -->
+        </div>
+
+        <!-- SLIDE 40: 5.3 INTRO TO MCP -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.3 &mdash; Model Context Protocol (MCP)</h3>
+                <h2>Los "plugins" de Claude</h2>
+                <p style="font-size: 0.6em; color: var(--color-text-muted); margin-bottom: 1em;">
+                    MCPs son puentes que conectan Claude con servicios externos
+                </p>
+                <div class="arch-diagram">
+                    <div class="arch-box fragment" style="background: rgba(239,68,68,0.2); border: 2px solid var(--color-m5);">
+                        Claude Code<br><small>(client)</small>
+                    </div>
+                    <span class="arch-arrow fragment">&harr;</span>
+                    <div class="arch-box fragment" style="background: rgba(255,255,255,0.05); border: 2px solid var(--color-text-muted);">
+                        MCP Server<br><small>(bridge)</small>
+                    </div>
+                    <span class="arch-arrow fragment">&harr;</span>
+                    <div class="arch-box fragment" style="background: rgba(59,130,246,0.2); border: 2px solid var(--color-m2);">
+                        GitHub, DB,<br>Browser...
+                    </div>
+                </div>
+                <p class="fragment" style="font-size: 0.55em; margin-top: 1.5em;">
+                    Analogía: si Claude Code es el <strong>cerebro</strong>, los MCPs son las <strong>manos</strong><br>
+                    que alcanzan diferentes servicios.
+                </p>
+            </div>
+            <!-- MCP = Model Context Protocol. Es un estándar abierto creado por Anthropic. Permite que cualquier servicio se conecte a Claude de forma estandarizada. Hay MCPs oficiales y de la comunidad. -->
+        </div>
+
+        <!-- SLIDE 41: COMMON MCPs -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.3 &mdash; MCPs Comunes</h3>
+                <h2>¿Con qué se puede conectar Claude?</h2>
+                <div class="grid-3" style="margin-top: 0.8em;">
+                    <div class="card fragment">
+                        <h4 style="color: #f0f0f0;">GitHub</h4>
+                        <p>Crear issues, PRs, branches. Buscar código. Revisar cambios. Mergear PRs.</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: #f0f0f0;">Puppeteer</h4>
+                        <p>Controlar un browser. Navegar, hacer click, llenar formularios, tomar screenshots.</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: #f0f0f0;">Bases de Datos</h4>
+                        <p>Conectar a PostgreSQL, SQLite, MySQL. Hacer queries, analizar datos.</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: #f0f0f0;">Slack</h4>
+                        <p>Leer mensajes, buscar en canales, enviar notificaciones.</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: #f0f0f0;">File System</h4>
+                        <p>Operaciones avanzadas de archivos más allá de lo básico de Claude Code.</p>
+                    </div>
+                    <div class="card fragment">
+                        <h4 style="color: #f0f0f0;">Y muchos más...</h4>
+                        <p>Jira, Notion, AWS, GCP, Sentry, Linear, Google Drive, etc.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- La lista crece cada semana. El ecosistema MCP es open source y cualquiera puede crear un MCP server para su servicio. -->
+        </div>
+
+        <!-- SLIDE 42: MCP CONFIGURATION -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.3 &mdash; Configuración</h3>
+                <h2>Activar un MCP Server</h2>
+                <pre><code class="language-json">// .claude/settings.json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y", "@anthropic-ai/mcp-server-github"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "ghp_xxxx..."
+      }
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": [
+        "-y", "@anthropic-ai/mcp-server-puppeteer"
+      ]
+    }
+  }
+}</code></pre>
+                <p style="font-size: 0.5em; color: var(--color-text-muted); margin-top: 0.8em;">
+                    Un archivo JSON, unos pocos líneas, y Claude tiene nuevos superpoderes.
+                </p>
+            </div>
+            <!-- Para no-devs: esto es como instalar una extensión en tu navegador, pero para Claude. Para devs: la config es simple, el token va en env vars por seguridad. -->
+        </div>
+
+        <!-- SLIDE 43: 5.4 DEMO: MCPs -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.4 &mdash; Demo: MCPs en Acción</h3>
+                <h2>GitHub + Puppeteer</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div>
+                        <div class="prompt-box good" style="font-size: 0.9em;">
+                            <strong>GitHub MCP:</strong><br>
+                            "Lista los issues abiertos del repo y crea un branch para el issue #42"
+                        </div>
+                        <!-- CSS Mockup: GitHub MCP terminal -->
+                        <div style="margin-top: 12px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); background: #0d1117; font-size: 0.75em; font-family: 'JetBrains Mono', monospace; text-align: left;">
+                            <div style="padding: 6px 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; gap: 6px;">
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span>
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+                                <span style="color: var(--color-text-muted); font-size: 0.8em; margin-left: 8px;">Terminal</span>
+                            </div>
+                            <div style="padding: 10px 14px; line-height: 1.6; font-size: 0.85em;">
+                                <div><span style="color: #8b5cf6;">&#9654; mcp_github_list_issues</span></div>
+                                <div style="color: var(--color-text-muted); padding-left: 12px;">#42 <span style="color: #10b981;">Fix login timeout</span></div>
+                                <div style="color: var(--color-text-muted); padding-left: 12px;">#41 <span style="color: #3b82f6;">Add user avatar upload</span></div>
+                                <div style="color: var(--color-text-muted); padding-left: 12px;">#39 <span style="color: #f59e0b;">Update API docs</span></div>
+                                <div style="margin-top: 6px;"><span style="color: #8b5cf6;">&#9654; mcp_github_create_branch</span></div>
+                                <div style="color: #10b981; padding-left: 12px;">&#10003; Branch <span style="color: var(--color-text);">fix/issue-42-login-timeout</span> created</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="prompt-box good" style="font-size: 0.9em;">
+                            <strong>Puppeteer MCP:</strong><br>
+                            "Abre nuestro staging site, toma un screenshot del login y verifica que el logo cargue"
+                        </div>
+                        <!-- CSS Mockup: Puppeteer MCP terminal -->
+                        <div style="margin-top: 12px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); background: #0d1117; font-size: 0.75em; font-family: 'JetBrains Mono', monospace; text-align: left;">
+                            <div style="padding: 6px 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; gap: 6px;">
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span>
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>
+                                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+                                <span style="color: var(--color-text-muted); font-size: 0.8em; margin-left: 8px;">Terminal</span>
+                            </div>
+                            <div style="padding: 10px 14px; line-height: 1.6; font-size: 0.85em;">
+                                <div><span style="color: #8b5cf6;">&#9654; mcp_puppeteer_navigate</span></div>
+                                <div style="color: var(--color-text-muted); padding-left: 12px;">Navigating to <span style="color: #3b82f6;">https://staging.example.com/login</span></div>
+                                <div style="color: #10b981; padding-left: 12px;">&#10003; Page loaded (1.2s)</div>
+                                <div style="margin-top: 6px;"><span style="color: #8b5cf6;">&#9654; mcp_puppeteer_screenshot</span></div>
+                                <div style="color: var(--color-text-muted); padding-left: 12px;">&#128247; Screenshot saved</div>
+                                <div style="margin-top: 6px; padding: 6px 10px; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.15); border-radius: 4px; display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 1.2em;">&#127760;</span>
+                                    <div>
+                                        <div style="color: var(--color-text); font-size: 0.9em;">login_screenshot.png</div>
+                                        <div style="color: #10b981; font-size: 0.8em;">Logo detectado &#10003; | Form visible &#10003;</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Si hay demos en vivo disponibles: mostrar Claude interactuando con GitHub y Puppeteer. Si no: mostrar screenshots del flujo. Punto clave: Claude no simula — realmente ejecuta acciones en los servicios. -->
+        </div>
+
+        <!-- SLIDE 44: 5.4b HOOKS -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m5);">5.4 &mdash; Bonus: Hooks</h3>
+                <h2>Automatización con hooks</h2>
+                <p style="font-size: 0.6em; color: var(--color-text-muted); margin-bottom: 1em;">
+                    Hooks ejecutan comandos automáticamente en respuesta a eventos de Claude Code
+                </p>
+                <pre><code class="language-json">// settings.json
+{
+  "hooks": {
+    "afterWrite": [
+      {
+        "command": "npx prettier --write $FILE_PATH",
+        "description": "Auto-format después de cada escritura"
+      }
+    ]
+  }
+}</code></pre>
+                <ul style="font-size: 0.55em;" class="fragment">
+                    <li><strong>afterWrite:</strong> auto-format, lint, etc.</li>
+                    <li><strong>afterCommit:</strong> run tests, notify Slack</li>
+                    <li><strong>beforeCommand:</strong> validaciones de seguridad</li>
+                </ul>
+            </div>
+            <!-- Los hooks son el puente entre Claude Code y tu pipeline de desarrollo. Permiten automatizar validaciones y acciones sin intervención manual. -->
+        </div>
+
+        <!-- SLIDE 45: 5.5 EXERCISE -->
+        <div class="slide exercise-slide">
+            <div class="slide-content">
+                <div class="exercise-badge">Ejercicio Práctico</div>
+                <h2>Diseña tu Stack MCP</h2>
+                <div style="text-align: left; font-size: 0.6em;">
+                    <ol>
+                        <li class="fragment">Lista los <strong>3 servicios externos</strong> que más usas en tu trabajo diario
+                            <p style="font-size: 0.85em; color: var(--color-text-muted);">(ej: Jira, Slack, PostgreSQL, AWS, Google Sheets...)</p>
+                        </li>
+                        <li class="fragment">Para cada uno, escribe <strong>3 comandos ideales</strong> que querrías que Claude ejecutara
+                            <div class="prompt-box good" style="margin: 8px 0; font-size: 0.9em;">
+                                "Slack MCP: search_messages, send_notification, summarize_channel"
+                            </div>
+                        </li>
+                        <li class="fragment">Busca si existe un MCP para ese servicio en<br>
+                            <strong>github.com/modelcontextprotocol</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="timer">5 minutos &bull; Diseño conceptual + exploración</div>
+            </div>
+            <!-- 5 minutos. Ejercicio de diseño, no de implementación. El objetivo es que piensen en cómo Claude puede conectarse a sus herramientas. Compartir 2-3 stacks del grupo. -->
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 46: TRANSITION 5 → 6                                  -->
+        <!-- ============================================================ -->
+        <div class="slide transition-slide" style="background: linear-gradient(135deg, rgba(239,68,68,0.1) 0%, var(--color-bg) 50%, rgba(212,160,23,0.1) 100%);">
+            <div class="slide-content">
+                <blockquote>
+                    Ya tienes todas las piezas. Ahora veamos cómo se <em>combinan</em> para crear flujos de trabajo completos.
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE 47: MODULE 6 TITLE                                    -->
+        <!-- ============================================================ -->
+        <div class="slide module-title" style="background: linear-gradient(135deg, var(--color-bg) 60%, rgba(212,160,23,0.15) 100%);">
+            <div class="slide-content">
+                <div class="module-number" style="color: var(--color-m6);">Módulo 06</div>
+                <h2>Patrones de Integración<br>y Próximos Pasos</h2>
+                <p class="module-subtitle">Combinando herramientas para flujos de trabajo completos</p>
+                <div class="module-time">10 minutos</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 48: 6.1 THE FULL PICTURE -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m6);">6.1 &mdash; El Panorama Completo</h3>
+                <h2>¿Qué herramienta para qué?</h2>
+                <table style="margin-top: 0.8em;">
+                    <thead>
+                        <tr>
+                            <th>Necesito...</th>
+                            <th>Usar...</th>
+                            <th>Módulo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="fragment">
+                            <td>Una respuesta rápida o análisis</td>
+                            <td><strong style="color: var(--color-m1);">Chat</strong></td>
+                            <td>1</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Crear algo visual o interactivo</td>
+                            <td><strong style="color: var(--color-m2);">Artifacts</strong></td>
+                            <td>2</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Consistencia y contexto de dominio</td>
+                            <td><strong style="color: var(--color-m3);">Projects</strong></td>
+                            <td>3</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Ejecutar tareas multi-paso en desktop</td>
+                            <td><strong style="color: var(--color-m4);">Cowork</strong></td>
+                            <td>4</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Trabajar con código y repos</td>
+                            <td><strong style="color: var(--color-m5);">Claude Code</strong></td>
+                            <td>5</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Conectar con servicios externos</td>
+                            <td><strong style="color: var(--color-m5);">MCPs</strong></td>
+                            <td>5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Resumen visual: el skill tree del inicio ahora completamente iluminado. Cada herramienta tiene su caso de uso ideal. -->
+        </div>
+
+        <!-- SLIDE 49: 6.2 COMBINING TOOLS -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m6);">6.2 &mdash; Combinando Herramientas</h3>
+                <h2>Patrones poderosos</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div class="card fragment" style="border-top: 3px solid var(--color-m3);">
+                        <h4>Project + Artifacts</h4>
+                        <p>Tu guía de marca vive en el project. Cada landing page que generes con artifacts sigue el tono y estilo exacto.</p>
+                    </div>
+                    <div class="card fragment" style="border-top: 3px solid var(--color-m4);">
+                        <h4>Cowork + Projects</h4>
+                        <p>@menciona un project en Cowork para traer contexto especializado a tareas de escritorio complejas.</p>
+                    </div>
+                    <div class="card fragment" style="border-top: 3px solid var(--color-m5);">
+                        <h4>Code + MCPs + GitHub</h4>
+                        <p>Pipeline automatizado: Claude revisa PRs, corre tests, comenta issues, y despliega &mdash; todo desde la terminal.</p>
+                    </div>
+                    <div class="card fragment" style="border-top: 3px solid var(--color-m6);">
+                        <h4>Artifacts + Publish</h4>
+                        <p>Crea reportes interactivos para clientes y compártelos via link &mdash; sin necesidad de hosting.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- El principio: empieza con la herramienta más simple que resuelva el problema. Escala cuando necesites más poder. -->
+        </div>
+
+        <!-- SLIDE 50: 6.3 RESOURCES -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m6);">6.3 &mdash; Recursos</h3>
+                <h2>Sigue aprendiendo</h2>
+                <div style="text-align: left; font-size: 0.6em; margin-top: 1em;">
+                    <div class="card" style="margin-bottom: 12px;">
+                        <h4 style="color: var(--color-m6);">Documentación Oficial</h4>
+                        <p><strong>docs.anthropic.com</strong> &mdash; API, guías, mejores prácticas<br>
+                        <strong>support.anthropic.com</strong> &mdash; Help center, tutoriales de features</p>
+                    </div>
+                    <div class="card" style="margin-bottom: 12px;">
+                        <h4 style="color: var(--color-m6);">Claude Code y MCPs</h4>
+                        <p><strong>github.com/anthropics/claude-code</strong> &mdash; Repo oficial de Claude Code<br>
+                        <strong>github.com/modelcontextprotocol</strong> &mdash; Spec y directorio de MCP servers</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--color-m6);">Comunidad</h4>
+                        <p><strong>Anthropic Discord</strong> &mdash; Comunidad oficial, soporte, showcase<br>
+                        <strong>Prompt Library</strong> en docs.anthropic.com &mdash; Prompts optimizados para distintos casos</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Dar tiempo para que la audiencia tome nota o fotografíe los recursos. Mencionar que la documentación de MCPs crece cada semana. -->
+        </div>
+
+        <!-- SLIDE 51: CALL TO ACTION -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2 style="color: var(--color-m6);">Tu misión esta semana</h2>
+                <div style="font-size: 0.75em; margin-top: 1em;">
+                    <p class="fragment" style="padding: 16px; background: var(--color-surface); border-radius: 10px; border-left: 4px solid var(--color-m6);">
+                        Elige <strong>un flujo de trabajo</strong> real de tu día a día y ejecútalo a través de Claude usando el modo apropiado.
+                    </p>
+                </div>
+                <div class="fragment" style="margin-top: 2em;">
+                    <div style="font-size: 0.55em; color: var(--color-text-muted);">
+                        <p>No técnico &rarr; empieza con <strong style="color: var(--color-m3);">Projects</strong></p>
+                        <p>Semi-técnico &rarr; prueba <strong style="color: var(--color-m4);">Cowork</strong></p>
+                        <p>Desarrollador &rarr; instala <strong style="color: var(--color-m5);">Claude Code</strong> y configura un MCP</p>
+                    </div>
+                </div>
+            </div>
+            <!-- El call to action es específico y accionable. No es "usa más Claude", es "elige UN flujo y ejecútalo esta semana". Preguntar si hay dudas finales. -->
+        </div>
+
+        <!-- SLIDE 52: FINAL SLIDE -->
+        <div class="slide" style="background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #2d1b4e 100%);">
+            <div class="slide-content">
+                <h1 style="font-size: 2em; margin-bottom: 0.3em;">
+                    <span style="color: var(--color-accent);">Gracias</span>
+                </h1>
+                <p style="font-size: 0.6em; color: var(--color-text-muted); margin-bottom: 2em;">
+                    Del primer prompt a la automatización total
+                </p>
+
+                <div class="skill-tree" style="margin-bottom: 2em;">
+                    <div class="skill-node" style="background: var(--color-m1); font-size: 0.45em;">Chat</div>
+                    <span class="skill-arrow" style="font-size: 0.8em;">&rarr;</span>
+                    <div class="skill-node" style="background: var(--color-m2); font-size: 0.45em;">Artifacts</div>
+                    <span class="skill-arrow" style="font-size: 0.8em;">&rarr;</span>
+                    <div class="skill-node" style="background: var(--color-m3); font-size: 0.45em;">Projects</div>
+                    <span class="skill-arrow" style="font-size: 0.8em;">&rarr;</span>
+                    <div class="skill-node" style="background: var(--color-m4); font-size: 0.45em;">Cowork</div>
+                    <span class="skill-arrow" style="font-size: 0.8em;">&rarr;</span>
+                    <div class="skill-node" style="background: var(--color-m5); font-size: 0.45em;">Code+MCPs</div>
+                </div>
+
+                <div style="font-size: 0.45em; color: var(--color-text-muted);">
+                    <p style="margin: 0.3em;">Preguntas &bull; Feedback &bull; Contacto</p>
+                </div>
+            </div>
+            <!-- Slide final. Agradecer. Abrir espacio para preguntas finales. Recordar el call to action de la semana. -->
+        </div>
+
+    </div><!-- /.slides-container -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+
+        (function() {
+            const container = document.getElementById('slides-container');
+            const slides = document.querySelectorAll('.slide');
+            const progressBar = document.getElementById('progress-bar');
+            const slideCounter = document.getElementById('slide-counter');
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+
+            function goToSlide(index) {
+                if (index < 0 || index >= totalSlides) return;
+                // Remove active from previous
+                slides[currentSlide].classList.remove('active');
+                currentSlide = index;
+                // Move container
+                container.style.transform = 'translateX(-' + (currentSlide * 100) + 'vw)';
+                // Add active to current
+                slides[currentSlide].classList.add('active');
+                // Update progress bar
+                const progress = totalSlides > 1 ? (currentSlide / (totalSlides - 1)) * 100 : 0;
+                progressBar.style.width = progress + '%';
+                // Update counter
+                slideCounter.textContent = (currentSlide + 1) + ' / ' + totalSlides;
+                // Update URL hash
+                window.location.hash = '#' + currentSlide;
+            }
+
+            function nextSlide() {
+                goToSlide(currentSlide + 1);
+            }
+
+            function prevSlide() {
+                goToSlide(currentSlide - 1);
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case ' ':
+                    case 'Enter':
+                        e.preventDefault();
+                        nextSlide();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        prevSlide();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        goToSlide(0);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        goToSlide(totalSlides - 1);
+                        break;
+                }
+            });
+
+            // Click navigation (left half = prev, right half = next)
+            document.addEventListener('click', function(e) {
+                // Ignore clicks on links or interactive elements
+                if (e.target.closest('a, button, input, textarea, pre, code')) return;
+                if (e.clientX > window.innerWidth / 2) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            });
+
+            // Touch navigation
+            let touchStartX = 0;
+            let touchEndX = 0;
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) nextSlide();
+                    else prevSlide();
+                }
+            }, { passive: true });
+
+            // Initialize from hash or slide 0
+            var startSlide = 0;
+            if (window.location.hash) {
+                var hashNum = parseInt(window.location.hash.substring(1), 10);
+                if (!isNaN(hashNum) && hashNum >= 0 && hashNum < totalSlides) {
+                    startSlide = hashNum;
+                }
+            }
+            goToSlide(startSlide);
+        })();
+    </script>
+</body>
+</html>
