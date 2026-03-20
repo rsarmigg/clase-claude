@@ -634,7 +634,7 @@
                     Desde un primer prompt hasta la automatización total
                 </p>
                 <div style="margin-top: 2em; font-size: 0.45em; color: var(--color-text-muted);">
-                    <p style="margin: 0;">Usa <kbd>&rarr;</kbd> para avanzar &bull; <kbd>&larr;</kbd> para retroceder</p>
+                    <p style="margin: 0;">Usa <kbd>&rarr;</kbd> para avanzar &bull; <kbd>&larr;</kbd> para retroceder &bull; <kbd>F</kbd> pantalla completa</p>
                 </div>
             </div>
             <!-- Bienvenida. Presentar el curso: 2 horas, 6 módulos, de principiante a experto. Preguntar: ¿Quiénes han usado Claude? ¿ChatGPT? ¿Algún LLM? -->
@@ -678,7 +678,7 @@
                 <div class="grid-2" style="margin-top: 1em;">
                     <div class="card">
                         <h4 style="color: var(--color-m1);">Módulos 1-3 (Todos)</h4>
-                        <p>Una cuenta en <strong>claude.ai</strong> (el plan gratuito funciona)<br>Un browser moderno (Chrome, Firefox, incluso Edge)</p>
+                        <p>Una cuenta en <strong>claude.ai</strong> (el plan gratuito funciona)<br>Un browser moderno (Chrome, Firefox, incluso Edge)<br>La <strong>app de escritorio</strong> de Claude (Mac/Windows) — necesaria para Cowork</p>
                     </div>
                     <div class="card">
                         <h4 style="color: var(--color-m5);">Módulos 4-5 (Un poco más avanzado)</h4>
@@ -690,6 +690,66 @@
                 </p>
             </div>
             <!-- Verificar con la audiencia: ¿todos tienen cuenta en claude.ai? Si alguien no tiene, que la creen ahora. Los módulos 4-5 son más técnicos pero todos pueden seguir la lógica. -->
+        </div>
+
+        <!-- SLIDE: ¿Por qué Claude? -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>¿Por qué Claude?</h2>
+                <p style="font-size: 0.6em; color: var(--color-text-muted); margin-bottom: 0.8em;">Y cómo se compara con ChatGPT y otros LLMs</p>
+                <div class="grid-2" style="margin-top: 0.5em;">
+                    <div class="card" style="border-color: var(--color-accent);">
+                        <h4 style="color: var(--color-accent);">Claude (Anthropic)</h4>
+                        <ul style="font-size: 0.55em; text-align: left;">
+                            <li><strong>Contexto masivo:</strong> 200K tokens (gratis) / 1M tokens (Pro) — el más grande del mercado</li>
+                            <li><strong>Razonamiento:</strong> Extended Thinking para problemas complejos</li>
+                            <li><strong>Escritura:</strong> Tono natural, menos "robótico", sigue instrucciones largas con precisión</li>
+                            <li><strong>Código:</strong> Claude Code como agente autónomo en tu terminal</li>
+                            <li><strong>Seguridad:</strong> Diseñado con AI Safety como prioridad</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--color-text-muted);">ChatGPT (OpenAI)</h4>
+                        <ul style="font-size: 0.55em; text-align: left;">
+                            <li><strong>Ecosistema:</strong> Plugins, GPTs, integración con Microsoft/Office</li>
+                            <li><strong>Multimodal:</strong> Genera imágenes (DALL-E), voz nativa</li>
+                            <li><strong>Búsqueda web:</strong> Integración directa con internet</li>
+                            <li><strong>Base de usuarios:</strong> Más conocido, más tutoriales disponibles</li>
+                            <li><strong>Contexto:</strong> 128K tokens — suficiente para muchos casos</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 0.8em; padding: 14px; background: rgba(217,119,6,0.1); border-radius: 10px; border-left: 4px solid var(--color-accent);">
+                    <p style="font-size: 0.55em; margin: 0;"><strong>No es uno u otro.</strong> Son herramientas complementarias. Hoy nos enfocamos en Claude porque es donde están las capacidades más avanzadas para trabajo profesional profundo — pero lo que aprendas sobre prompting aplica a cualquier LLM.</p>
+                </div>
+            </div>
+            <!-- Pregunta a la audiencia: ¿quiénes usan ChatGPT? ¿Quiénes han probado Claude? La idea no es reemplazar sino expandir su toolkit. -->
+        </div>
+
+        <!-- SLIDE: Seguridad y privacidad -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Tus datos están seguros</h2>
+                <p style="font-size: 0.6em; color: var(--color-text-muted); margin-bottom: 0.8em;">Con la configuración correcta, <strong style="color: var(--color-m1);">sí puedes</strong> trabajar con información sensible</p>
+                <div class="grid-3" style="margin-top: 0.5em;">
+                    <div class="card" style="border-color: var(--color-m1);">
+                        <h4 style="color: var(--color-m1);">Planes Pro / Team / Enterprise</h4>
+                        <p style="font-size: 0.5em; text-align: left;">Anthropic <strong>no entrena con tus datos</strong> en planes de pago. Tus conversaciones no alimentan el modelo. Puedes subir código propietario, documentos internos y datos de negocio con confianza.</p>
+                    </div>
+                    <div class="card" style="border-color: var(--color-m2);">
+                        <h4 style="color: var(--color-m2);">Claude Code = procesamiento local</h4>
+                        <p style="font-size: 0.5em; text-align: left;">Claude Code lee tus archivos <strong>en tu máquina</strong>. Solo envía al servidor lo que necesita para responder. Tu codebase completo nunca se sube — se procesa localmente y se envían fragmentos relevantes.</p>
+                    </div>
+                    <div class="card" style="border-color: var(--color-accent);">
+                        <h4 style="color: var(--color-accent);">El setting que debes verificar</h4>
+                        <p style="font-size: 0.5em; text-align: left;">En cualquier LLM, busca el toggle de <strong>"No entrenar con mis datos"</strong> en la configuración de privacidad. En Claude está en Settings &rarr; Privacy. <strong>Siempre verifica que esté activo.</strong></p>
+                    </div>
+                </div>
+                <div class="fragment" style="margin-top: 0.8em; padding: 14px; background: rgba(16,185,129,0.1); border-radius: 10px; border-left: 4px solid var(--color-m1);">
+                    <p style="font-size: 0.5em; margin: 0;"><strong>Lo único que nunca debes pegar en ningún LLM:</strong> contraseñas, API keys, tokens de acceso y datos regulados (HIPAA/GDPR) sin un plan empresarial con cumplimiento específico. Para todo lo demás — con el plan y el setting correctos — <strong>trabaja con confianza</strong>.</p>
+                </div>
+            </div>
+            <!-- Mostrar en pantalla dónde está el setting de privacidad en Claude. Transmitir tranquilidad: la herramienta está diseñada para uso profesional serio. -->
         </div>
 
         <!-- ============================================================ -->
@@ -850,28 +910,6 @@
             <!-- Mostrar cómo una conversación de 3-4 turnos construye sobre sí misma. Demostrar una corrección mid-stream. -->
         </div>
 
-        <!-- SLIDE 10: 1.3b EXTENDED THINKING -->
-        <div class="slide">
-            <div class="slide-content">
-                <h3 style="color: var(--color-m1);">1.3 &mdash; Extended Thinking</h3>
-                <h2>Cuando necesitas que Claude <em>piense</em> de verdad</h2>
-                <div class="grid-2" style="margin-top: 0.8em;">
-                    <div class="card">
-                        <h4>Sin Extended Thinking</h4>
-                        <p>Claude responde inmediatamente con su "primera intuición". Ideal para tareas directas y rápidas.</p>
-                    </div>
-                    <div class="card" style="border-color: var(--color-m1);">
-                        <h4 style="color: var(--color-m1);">Con Extended Thinking</h4>
-                        <p>Claude razona paso a paso internamente antes de responder. Visible como un bloque desplegable. Mejor para problemas complejos, matemáticas, lógica y análisis.</p>
-                    </div>
-                </div>
-                <p class="fragment" style="font-size: 0.55em; color: var(--color-text-muted); text-align: center; margin-top: 1em;">
-                    Se activa en el selector de modelo o Claude lo usa automáticamente cuando lo necesita.
-                </p>
-            </div>
-            <!-- Mostrar un ejemplo donde extended thinking marca la diferencia: un puzzle lógico o un problema de código complejo. -->
-        </div>
-
         <!-- SLIDE: Context Window 1M -->
         <div class="slide">
             <div class="slide-content">
@@ -914,6 +952,28 @@
             </div>
         </div>
 
+        <!-- SLIDE 10: 1.3b EXTENDED THINKING -->
+        <div class="slide">
+            <div class="slide-content">
+                <h3 style="color: var(--color-m1);">1.3 &mdash; Extended Thinking</h3>
+                <h2>Cuando necesitas que Claude <em>piense</em> de verdad</h2>
+                <div class="grid-2" style="margin-top: 0.8em;">
+                    <div class="card">
+                        <h4>Sin Extended Thinking</h4>
+                        <p>Claude responde inmediatamente con su "primera intuición". Ideal para tareas directas y rápidas.</p>
+                    </div>
+                    <div class="card" style="border-color: var(--color-m1);">
+                        <h4 style="color: var(--color-m1);">Con Extended Thinking</h4>
+                        <p>Claude razona paso a paso internamente antes de responder. Visible como un bloque desplegable. Mejor para problemas complejos, matemáticas, lógica y análisis.</p>
+                    </div>
+                </div>
+                <p class="fragment" style="font-size: 0.55em; color: var(--color-text-muted); text-align: center; margin-top: 1em;">
+                    Se activa en el selector de modelo o Claude lo usa automáticamente cuando lo necesita.
+                </p>
+            </div>
+            <!-- Mostrar un ejemplo donde extended thinking marca la diferencia: un puzzle lógico o un problema de código complejo. -->
+        </div>
+
         <!-- ============================================================ -->
         <!-- SLIDE 13: MODULE 2 TITLE                                    -->
         <!-- ============================================================ -->
@@ -931,7 +991,7 @@
     <div class="slide-content">
         <h3 style="color: var(--color-m2);">2.1 — Artifacts en acción</h3>
         <h2>De un prompt a una app interactiva</h2>
-        <div class="grid-2" style="margin-top: 0.8em;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1em; margin-top: 0.8em;">
             <div style="text-align: center;">
                 <img src="Screenshots/slide 14 - 1.png" alt="Claude creando un juego de trivia" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
                 <p style="font-size: 0.45em; color: var(--color-text-muted); margin-top: 0.5em;">Un prompt → una app completa con diseño, lógica y datos</p>
@@ -1141,14 +1201,14 @@
     <div class="slide-content">
         <h3 style="color: var(--color-m3);">3.4 — Projects en acción</h3>
         <h2>Así se ve un Project real</h2>
-        <div class="grid-2" style="margin-top: 0.8em;">
-            <div style="text-align: center;">
-                <img src="Screenshots/slide 25 - 1.png" alt="Vista de proyecto con archivos" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
-                <p style="font-size: 0.45em; color: var(--color-text-muted); margin-top: 0.5em;">Proyecto con instrucciones, archivos y conversaciones</p>
+        <div style="display: flex; gap: 1em; margin-top: 0.8em; align-items: flex-start;">
+            <div style="flex: 1; text-align: center;">
+                <img src="Screenshots/slide 25 - 1.png" alt="Vista de proyecto con archivos" style="max-width: 100%; max-height: 65vh; object-fit: contain; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
+                <p style="font-size: 0.4em; color: var(--color-text-muted); margin-top: 0.4em;">Proyecto con instrucciones, archivos y conversaciones</p>
             </div>
-            <div style="text-align: center;">
-                <img src="Screenshots/slide 25 - 2.png" alt="Claude analizando documentos del proyecto" style="max-width: 100%; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
-                <p style="font-size: 0.45em; color: var(--color-text-muted); margin-top: 0.5em;">Claude analizando los documentos del proyecto</p>
+            <div style="flex: 1; text-align: center;">
+                <img src="Screenshots/slide 25 - 2.png" alt="Claude analizando documentos del proyecto" style="max-width: 100%; max-height: 65vh; object-fit: contain; border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);">
+                <p style="font-size: 0.4em; color: var(--color-text-muted); margin-top: 0.4em;">Claude analizando los documentos del proyecto</p>
             </div>
         </div>
     </div>
@@ -1819,32 +1879,6 @@ claude</code></pre>
             <!-- El principio: empieza con la herramienta más simple que resuelva el problema. Escala cuando necesites más poder. -->
         </div>
 
-        <!-- SLIDE 50: 6.3 RESOURCES -->
-        <div class="slide">
-            <div class="slide-content">
-                <h3 style="color: var(--color-m6);">6.3 &mdash; Recursos</h3>
-                <h2>Sigue aprendiendo</h2>
-                <div style="text-align: left; font-size: 0.6em; margin-top: 1em;">
-                    <div class="card" style="margin-bottom: 12px;">
-                        <h4 style="color: var(--color-m6);">Documentación Oficial</h4>
-                        <p><strong>docs.anthropic.com</strong> &mdash; API, guías, mejores prácticas<br>
-                        <strong>support.anthropic.com</strong> &mdash; Help center, tutoriales de features</p>
-                    </div>
-                    <div class="card" style="margin-bottom: 12px;">
-                        <h4 style="color: var(--color-m6);">Claude Code y MCPs</h4>
-                        <p><strong>github.com/anthropics/claude-code</strong> &mdash; Repo oficial de Claude Code<br>
-                        <strong>github.com/modelcontextprotocol</strong> &mdash; Spec y directorio de MCP servers</p>
-                    </div>
-                    <div class="card">
-                        <h4 style="color: var(--color-m6);">Comunidad</h4>
-                        <p><strong>Anthropic Discord</strong> &mdash; Comunidad oficial, soporte, showcase<br>
-                        <strong>Prompt Library</strong> en docs.anthropic.com &mdash; Prompts optimizados para distintos casos</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Dar tiempo para que la audiencia tome nota o fotografíe los recursos. Mencionar que la documentación de MCPs crece cada semana. -->
-        </div>
-
         <!-- SLIDE: GRACIAS -->
         <div class="slide" style="background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #2d1b4e 100%);">
             <div class="slide-content">
@@ -1960,6 +1994,15 @@ claude</code></pre>
                     case 'End':
                         e.preventDefault();
                         goToSlide(totalSlides - 1);
+                        break;
+                    case 'f':
+                    case 'F':
+                        e.preventDefault();
+                        if (!document.fullscreenElement) {
+                            document.documentElement.requestFullscreen();
+                        } else {
+                            document.exitFullscreen();
+                        }
                         break;
                 }
             });
